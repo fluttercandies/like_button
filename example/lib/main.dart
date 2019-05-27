@@ -1,4 +1,9 @@
+import 'package:extended_image_library/extended_image_library.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
+
+import 'like_button_demo.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,68 +49,112 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<Page> pages = new List<Page>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    pages.add(Page(
+        PageType.likeButton,
+        "like button"
+        "show how to build like button"));
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+    ///clear cache image from 7 days before
+    clearDiskCachedImages(duration: Duration(days: 7));
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    // TODO: implement build
+
+    var content = ListView.builder(
+      itemBuilder: (_, int index) {
+        var page = pages[index];
+
+        Widget pageWidget;
+        return Container(
+          margin: EdgeInsets.all(20.0),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  (index + 1).toString() +
+                      "." +
+                      page.type.toString().replaceAll("PageType.", ""),
+                  //style: TextStyle(inherit: false),
+                ),
+                Text(
+                  page.description,
+                  style: TextStyle(color: Colors.grey),
+                )
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            onTap: () {
+              switch (page.type) {
+                case PageType.likeButton:
+                  pageWidget = LikeButtonDemo();
+                  break;
+                // case PageType.List:
+                //pageWidget = ImageListDemo();
+                //  break;
+                default:
+                  break;
+              }
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (BuildContext context) {
+                return pageWidget;
+              }));
+            },
+          ),
+        );
+      },
+      itemCount: pages.length,
+    );
+
+    return MaterialApp(
+      builder: (c, w) {
+        ScreenUtil.instance =
+            ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
+              ..init(c);
+        var data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: Scaffold(
+            body: w,
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                ///clear memory
+                clearMemoryImageCache();
+
+                ///clear local cahced
+                clearDiskCachedImages().then((bool done) {
+                  showToast(done ? "clear succeed" : "clear failed",
+                      position: ToastPosition(align: Alignment.center));
+                });
+              },
+              child: Text(
+                "clear cache",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  inherit: false,
+                ),
+              ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+        );
+      },
+      home: content,
     );
   }
 }
+
+class Page {
+  final PageType type;
+  final String description;
+  Page(this.type, this.description);
+}
+
+enum PageType { likeButton }
