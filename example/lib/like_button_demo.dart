@@ -15,6 +15,7 @@ class LikeButtonDemo extends StatefulWidget {
 class _LikeButtonDemoState extends State<LikeButtonDemo> {
   @override
   Widget build(BuildContext context) {
+    final int likeCount = 665;
     return Material(
         child: Column(children: <Widget>[
       AppBar(
@@ -23,7 +24,33 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
       Expanded(
         child: GridView(
           children: <Widget>[
-            LikeButton(size: buttonSize),
+            LikeButton(
+              size: buttonSize,
+              likeCount: likeCount,
+              countBuilder: (int count, bool isLiked) {
+                var color = isLiked ? Colors.pinkAccent : Colors.grey;
+
+                Widget result;
+                if (count == 0) {
+                  result = Text(
+                    "Like",
+                    style: TextStyle(color: color),
+                  );
+                } else
+                  result = Text(
+                    count >= 1000
+                        ? (count / 1000.0).toStringAsFixed(2) + "k"
+                        : count.toString(),
+                    style: TextStyle(color: color),
+                  );
+
+                return Padding(
+                  child: result,
+                  padding: EdgeInsets.only(left: 3.0),
+                );
+              },
+              enableLikeCountAnimation: likeCount < 1000,
+            ),
             LikeButton(
               size: buttonSize,
               circleStartColor: Color(0xff00ddff),

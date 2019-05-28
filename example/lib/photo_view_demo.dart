@@ -135,13 +135,14 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                           ? Colors.pinkAccent
                                           : Colors.white;
 
+                                      Widget result;
                                       if (count == 0) {
-                                        return Text(
+                                        result = Text(
                                           "Like",
                                           style: TextStyle(color: color),
                                         );
                                       } else
-                                        return Text(
+                                        result = Text(
                                           count >= 1000
                                               ? (count / 1000.0)
                                                       .toStringAsFixed(2) +
@@ -149,9 +150,17 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                               : count.toString(),
                                           style: TextStyle(color: color),
                                         );
+
+                                      return Padding(
+                                        child: result,
+                                        padding: EdgeInsets.only(left: 3.0),
+                                      );
                                     },
                                     enableLikeCountAnimation:
                                         item.favorites < 1000,
+                                    click: (bool isLiked) {
+                                      return onClick(isLiked, item);
+                                    },
                                   ),
                                 ],
                               ),
@@ -169,6 +178,20 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
         ],
       ),
     );
+  }
+
+  Future<bool> onClick(bool isLiked, TuChongItem item) {
+    ///send your request
+    ///
+    final Completer<bool> completer = new Completer<bool>();
+    Timer(const Duration(milliseconds: 200), () {
+      item.is_favorite = !item.is_favorite;
+      item.favorites =
+          item.is_favorite ? item.favorites + 1 : item.favorites - 1;
+      //print(item.favorites);
+      completer.complete(item.is_favorite);
+    });
+    return completer.future;
   }
 
   Future<bool> onRefresh() {

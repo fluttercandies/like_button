@@ -18,7 +18,7 @@ class LikeButton extends StatefulWidget {
   final DotColor dotColor;
   final Color circleStartColor;
   final Color circleEndColor;
-  final LikeCallback onIconClicked;
+  final OnClick click;
   final bool isLiked;
   final int likeCount;
   final MainAxisAlignment mainAxisAlignment;
@@ -47,7 +47,7 @@ class LikeButton extends StatefulWidget {
     ),
     this.circleStartColor = const Color(0xFFFF5722),
     this.circleEndColor = const Color(0xFFFFC107),
-    this.onIconClicked,
+    this.click,
   })  : assert(size != null),
         assert(duration != null),
         dotSize = dotSize ?? size * 2.0,
@@ -165,7 +165,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           ),
           _likeCount == null
               ? Container()
-              : (widget.enableLikeCountAnimation
+              : (widget.enableLikeCountAnimation && _oldLikeCount != _likeCount
                   ? ClipRect(
                       clipper: LikeCountClip(),
                       child: AnimatedBuilder(
@@ -179,36 +179,30 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
                                   translation: _oldLikeCount > _likeCount
                                       ? _slideNewValueAnimation.value
                                       : -_slideNewValueAnimation.value,
-                                  child: _getLikeWidget()),
+                                  child: _getLikeCountWidget(
+                                      _likeCount, _isLiked)),
                               FractionalTranslation(
                                   translation: _oldLikeCount > _likeCount
                                       ? _slideOldValueAnimation.value
                                       : -_slideOldValueAnimation.value,
-                                  child: (widget.countBuilder
-                                          ?.call(_oldLikeCount, !_isLiked) ??
-                                      Padding(
-                                        child: Text(
-                                          _oldLikeCount.toString(),
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                        padding: EdgeInsets.only(left: 3.0),
-                                      ))),
+                                  child: _getLikeCountWidget(
+                                      _oldLikeCount, !_isLiked)),
                             ],
                           );
                         },
                       ),
                     )
-                  : _getLikeWidget())
+                  : _getLikeCountWidget(_likeCount, _isLiked))
         ],
       ),
     );
   }
 
-  Widget _getLikeWidget() {
-    return (widget.countBuilder?.call(_likeCount, _isLiked) ??
+  Widget _getLikeCountWidget(int likeCount, bool isLiked) {
+    return (widget.countBuilder?.call(likeCount, isLiked) ??
         Padding(
           child: Text(
-            _likeCount.toString(),
+            likeCount.toString(),
             style: TextStyle(color: Colors.grey),
           ),
           padding: EdgeInsets.only(left: 3.0),
@@ -217,8 +211,8 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   void _onTap() {
     if (_controller.isAnimating || _likeCountController.isAnimating) return;
-    if (widget.onIconClicked != null) {
-      widget.onIconClicked(_isLiked).then((isLiked) {
+    if (widget.click != null) {
+      widget.click(_isLiked).then((isLiked) {
         _handleIsLikeChanged(isLiked);
       });
     } else {
