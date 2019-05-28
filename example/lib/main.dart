@@ -1,3 +1,4 @@
+import 'package:example/photo_view_demo.dart';
 import 'package:extended_image_library/extended_image_library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
         PageType.likeButton,
         "like button"
         "show how to build like button"));
+    pages.add(Page(
+        PageType.photoView,
+        "photo view"
+        "show how to build like button in photo view"));
 
     ///clear cache image from 7 days before
     clearDiskCachedImages(duration: Duration(days: 7));
@@ -97,9 +102,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 case PageType.likeButton:
                   pageWidget = LikeButtonDemo();
                   break;
-                // case PageType.List:
-                //pageWidget = ImageListDemo();
-                //  break;
+                case PageType.photoView:
+                  pageWidget = PhotoViewDemo();
+                  break;
                 default:
                   break;
               }
@@ -157,4 +162,4 @@ class Page {
   Page(this.type, this.description);
 }
 
-enum PageType { likeButton }
+enum PageType { likeButton, photoView }

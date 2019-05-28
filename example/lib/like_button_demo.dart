@@ -32,7 +32,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 dotPrimaryColor: Color(0xff33b5e5),
                 dotSecondaryColor: Color(0xff0099cc),
               ),
-              builder: (bool isLiked) {
+              likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.home,
                   color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
@@ -48,7 +48,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 dotPrimaryColor: Color(0xff669900),
                 dotSecondaryColor: Color(0xff99cc00),
               ),
-              builder: (bool isLiked) {
+              likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.adb,
                   color: isLiked ? Colors.green : Colors.grey,
@@ -58,13 +58,14 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Colors.lightBlue[100],
-              circleEndColor: Colors.lightBlue[300],
+              isLiked: true,
+              circleStartColor: Colors.redAccent[100],
+              circleEndColor: Colors.redAccent[400],
               dotColor: DotColor(
                 dotPrimaryColor: Colors.red[300],
                 dotSecondaryColor: Colors.red[200],
               ),
-              builder: (bool isLiked) {
+              likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.assistant_photo,
                   color: isLiked ? Colors.red : Colors.grey,
@@ -80,7 +81,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 dotPrimaryColor: Colors.lightBlue[300],
                 dotSecondaryColor: Colors.lightBlue[200],
               ),
-              builder: (bool isLiked) {
+              likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.insert_emoticon,
                   color: isLiked ? Colors.lightBlueAccent : Colors.grey,
@@ -90,13 +91,13 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Colors.orange[200],
-              circleEndColor: Colors.orange[400],
+              circleStartColor: Colors.grey[200],
+              circleEndColor: Colors.grey[400],
               dotColor: DotColor(
                 dotPrimaryColor: Colors.grey[600],
                 dotSecondaryColor: Colors.grey[200],
               ),
-              builder: (bool isLiked) {
+              likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.cloud,
                   color: isLiked ? Colors.grey[900] : Colors.grey,

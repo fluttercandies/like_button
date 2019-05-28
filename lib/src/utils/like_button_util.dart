@@ -25,3 +25,17 @@ Widget defaultWidgetBuilder(bool isLiked, double size) {
     size: size,
   );
 }
+
+class LikeCountClip extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    // TODO: implement getClip
+    return Offset.zero & size;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    // TODO: implement shouldReclip
+    return true;
+  }
+}
