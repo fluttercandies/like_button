@@ -4,7 +4,7 @@
 
 Like Button is a flutter library that allows you to create a button with animation effects similar to Twitter&#x27;s heart when you like something.
 
-Reference codes from [jd-alexander](https://github.com/jd-alexander/LikeButton) and [吉原拉面](https://github.com/yumi0629/FlutterUI/tree/master/lib/likebutton) ,thanks for their open source.
+Reference codes from [jd-alexander](https://github.com/jd-alexander/LikeButton) and [吉原拉面](https://github.com/yumi0629/FlutterUI/tree/master/lib/likebutton) ,thank them for open source code.
 
 ![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
 
