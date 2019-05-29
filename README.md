@@ -53,7 +53,7 @@ and you can also define custom effects.
              ),
 ```
 
-## When send your request
+## The time to send your request
 ```dart
          LikeButton(
                 onTap: (bool isLiked) 
