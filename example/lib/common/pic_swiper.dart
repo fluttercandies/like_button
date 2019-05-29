@@ -44,7 +44,6 @@ class _PicSwiperState extends State<PicSwiper>
     currentIndex = widget.index;
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 150), vsync: this);
-    // TODO: implement initState
     super.initState();
   }
 
@@ -54,7 +53,6 @@ class _PicSwiperState extends State<PicSwiper>
     _animationController?.dispose();
     clearGestureDetailsCache();
     //cancelToken?.cancel();
-    // TODO: implement dispose
     super.dispose();
   }
 

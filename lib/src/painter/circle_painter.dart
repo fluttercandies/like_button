@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/src/utils/like_button_model.dart';
 import 'package:like_button/src/utils/like_button_util.dart';
 
 ///
@@ -11,15 +12,13 @@ class CirclePainter extends CustomPainter {
 
   final double outerCircleRadiusProgress;
   final double innerCircleRadiusProgress;
-  final Color startColor;
-  final Color endColor;
+  final CircleColor circleColor;
 
-  CirclePainter({
-    @required this.outerCircleRadiusProgress,
-    @required this.innerCircleRadiusProgress,
-    this.startColor = const Color(0xFFFF5722),
-    this.endColor = const Color(0xFFFFC107),
-  }) {
+  CirclePainter(
+      {@required this.outerCircleRadiusProgress,
+      @required this.innerCircleRadiusProgress,
+      this.circleColor = const CircleColor(
+          start: const Color(0xFFFF5722), end: const Color(0xFFFFC107))}) {
     circlePaint..style = PaintingStyle.fill;
     maskPaint..blendMode = BlendMode.clear;
   }
@@ -39,7 +38,8 @@ class CirclePainter extends CustomPainter {
   void _updateCircleColor() {
     double colorProgress = clamp(outerCircleRadiusProgress, 0.5, 1.0);
     colorProgress = mapValueFromRangeToRange(colorProgress, 0.5, 1.0, 0.0, 1.0);
-    circlePaint..color = Color.lerp(startColor, endColor, colorProgress);
+    circlePaint
+      ..color = Color.lerp(circleColor.start, circleColor.end, colorProgress);
   }
 
   @override

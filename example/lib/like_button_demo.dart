@@ -15,7 +15,7 @@ class LikeButtonDemo extends StatefulWidget {
 class _LikeButtonDemoState extends State<LikeButtonDemo> {
   @override
   Widget build(BuildContext context) {
-    final int likeCount = 665;
+    final int likeCount = 999;
     return Material(
         child: Column(children: <Widget>[
       AppBar(
@@ -27,35 +27,33 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             LikeButton(
               size: buttonSize,
               likeCount: likeCount,
-              countBuilder: (int count, bool isLiked) {
+              countBuilder: (int count, bool isLiked, String text) {
                 var color = isLiked ? Colors.pinkAccent : Colors.grey;
-
                 Widget result;
                 if (count == 0) {
                   result = Text(
-                    "Like",
+                    "love",
                     style: TextStyle(color: color),
                   );
                 } else
                   result = Text(
                     count >= 1000
-                        ? (count / 1000.0).toStringAsFixed(2) + "k"
-                        : count.toString(),
+                        ? (count / 1000.0).toStringAsFixed(1) + "k"
+                        : text,
                     style: TextStyle(color: color),
                   );
-
-                return Padding(
-                  child: result,
-                  padding: EdgeInsets.only(left: 3.0),
-                );
+                return result;
               },
-              enableLikeCountAnimation: likeCount < 1000,
+              likeCountAnimationType: likeCount < 1000
+                  ? LikeCountAnimationType.part
+                  : LikeCountAnimationType.none,
+              likeCountPadding: EdgeInsets.only(left: 10.0),
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Color(0xff00ddff),
-              circleEndColor: Color(0xff0099cc),
-              dotColor: DotColor(
+              circleColor:
+                  CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+              bubblesColor: BubblesColor(
                 dotPrimaryColor: Color(0xff33b5e5),
                 dotSecondaryColor: Color(0xff0099cc),
               ),
@@ -66,12 +64,28 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   size: buttonSize,
                 );
               },
+              likeCount: 665,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+                Widget result;
+                if (count == 0) {
+                  result = Text(
+                    "love",
+                    style: TextStyle(color: color),
+                  );
+                } else
+                  result = Text(
+                    text,
+                    style: TextStyle(color: color),
+                  );
+                return result;
+              },
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Color(0xff669900),
-              circleEndColor: Color(0xff669900),
-              dotColor: DotColor(
+              circleColor:
+                  CircleColor(start: Color(0xff669900), end: Color(0xff669900)),
+              bubblesColor: BubblesColor(
                 dotPrimaryColor: Color(0xff669900),
                 dotSecondaryColor: Color(0xff99cc00),
               ),
@@ -82,13 +96,17 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   size: buttonSize,
                 );
               },
+              likeCount: 665,
+              likeCountAnimationType: LikeCountAnimationType.all,
             ),
             LikeButton(
               size: buttonSize,
               isLiked: true,
-              circleStartColor: Colors.redAccent[100],
-              circleEndColor: Colors.redAccent[400],
-              dotColor: DotColor(
+              circleColor: CircleColor(
+                start: Colors.redAccent[100],
+                end: Colors.redAccent[400],
+              ),
+              bubblesColor: BubblesColor(
                 dotPrimaryColor: Colors.red[300],
                 dotSecondaryColor: Colors.red[200],
               ),
@@ -102,9 +120,9 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Colors.pinkAccent[200],
-              circleEndColor: Colors.pinkAccent[400],
-              dotColor: DotColor(
+              circleColor: CircleColor(
+                  start: Colors.pinkAccent[200], end: Colors.pinkAccent[400]),
+              bubblesColor: BubblesColor(
                 dotPrimaryColor: Colors.lightBlue[300],
                 dotSecondaryColor: Colors.lightBlue[200],
               ),
@@ -118,9 +136,11 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
-              circleStartColor: Colors.grey[200],
-              circleEndColor: Colors.grey[400],
-              dotColor: DotColor(
+              circleColor: CircleColor(
+                start: Colors.grey[200],
+                end: Colors.grey[400],
+              ),
+              bubblesColor: BubblesColor(
                 dotPrimaryColor: Colors.grey[600],
                 dotSecondaryColor: Colors.grey[200],
               ),

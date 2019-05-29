@@ -7,9 +7,9 @@ import 'package:like_button/src/utils/like_button_util.dart';
 ///  create by zmtzawqlp on 2019/5/27
 ///
 
-class DotPainter extends CustomPainter {
-  final int dotCount;
-  double outerDotsPositionAngle = 51.42;
+class BubblesPainter extends CustomPainter {
+  final int bubblesCount;
+  double outerBubblesPositionAngle = 51.42;
 
   final Color color1;
   final Color color2;
@@ -34,15 +34,15 @@ class DotPainter extends CustomPainter {
 
   bool isFirst = true;
 
-  DotPainter({
+  BubblesPainter({
     @required this.currentProgress,
-    this.dotCount = 7,
+    this.bubblesCount = 7,
     this.color1 = const Color(0xFFFFC107),
     this.color2 = const Color(0xFFFF9800),
     this.color3 = const Color(0xFFFF5722),
     this.color4 = const Color(0xFFF44336),
   }) {
-    outerDotsPositionAngle = 360.0 / dotCount;
+    outerBubblesPositionAngle = 360.0 / bubblesCount;
     for (int i = 0; i < circlePaints.length; i++) {
       circlePaints[i] = new Paint()..style = PaintingStyle.fill;
     }
@@ -58,38 +58,38 @@ class DotPainter extends CustomPainter {
       maxInnerDotsRadius = 0.8 * maxOuterDotsRadius;
       isFirst = false;
     }
-    _updateOuterDotsPosition();
-    _updateInnerDotsPosition();
-    _updateDotsPaints();
-    _drawOuterDotsFrame(canvas);
-    _drawInnerDotsFrame(canvas);
+    _updateOuterBubblesPosition();
+    _updateInnerBubblesPosition();
+    _updateBubblesPaints();
+    _drawOuterBubblesFrame(canvas);
+    _drawInnerBubblesFrame(canvas);
   }
 
-  void _drawOuterDotsFrame(Canvas canvas) {
-    for (int i = 0; i < dotCount; i++) {
+  void _drawOuterBubblesFrame(Canvas canvas) {
+    for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
-          currentRadius1 * math.cos(i * degToRad(outerDotsPositionAngle));
+          currentRadius1 * math.cos(i * degToRad(outerBubblesPositionAngle));
       double cY = centerY +
-          currentRadius1 * math.sin(i * degToRad(outerDotsPositionAngle));
+          currentRadius1 * math.sin(i * degToRad(outerBubblesPositionAngle));
       canvas.drawCircle(Offset(cX, cY), currentDotSize1,
           circlePaints[i % circlePaints.length]);
     }
   }
 
-  void _drawInnerDotsFrame(Canvas canvas) {
-    for (int i = 0; i < dotCount; i++) {
+  void _drawInnerBubblesFrame(Canvas canvas) {
+    for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
           currentRadius2 *
-              math.cos((i * degToRad(outerDotsPositionAngle - 10)));
+              math.cos((i * degToRad(outerBubblesPositionAngle - 10)));
       double cY = centerY +
           currentRadius2 *
-              math.sin((i * degToRad(outerDotsPositionAngle - 10)));
+              math.sin((i * degToRad(outerBubblesPositionAngle - 10)));
       canvas.drawCircle(Offset(cX, cY), currentDotSize2,
           circlePaints[(i + 1) % circlePaints.length]);
     }
   }
 
-  void _updateOuterDotsPosition() {
+  void _updateOuterBubblesPosition() {
     if (currentProgress < 0.3) {
       currentRadius1 = mapValueFromRangeToRange(
           currentProgress, 0.0, 0.3, 0.0, maxOuterDotsRadius * 0.8);
@@ -107,7 +107,7 @@ class DotPainter extends CustomPainter {
     }
   }
 
-  void _updateInnerDotsPosition() {
+  void _updateInnerBubblesPosition() {
     if (currentProgress < 0.3) {
       currentRadius2 = mapValueFromRangeToRange(
           currentProgress, 0.0, 0.3, 0.0, maxInnerDotsRadius);
@@ -127,7 +127,7 @@ class DotPainter extends CustomPainter {
     }
   }
 
-  void _updateDotsPaints() {
+  void _updateBubblesPaints() {
     double progress = clamp(currentProgress, 0.6, 1.0);
     int alpha =
         mapValueFromRangeToRange(progress, 0.6, 1.0, 255.0, 0.0).toInt();

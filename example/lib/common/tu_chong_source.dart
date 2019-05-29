@@ -219,12 +219,10 @@ class TuChongItem {
 
   @override
   bool operator ==(other) {
-    // TODO: implement ==
     return other.post_id == post_id;
   }
 
   @override
-  // TODO: implement hashCode
   int get hashCode => post_id;
 }
 

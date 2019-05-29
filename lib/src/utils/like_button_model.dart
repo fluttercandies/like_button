@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 ///  create by zmtzawqlp on 2019/5/27
 ///
 
-class DotColor {
+class BubblesColor {
   final Color dotPrimaryColor;
   final Color dotSecondaryColor;
   final Color dotThirdColor;
   final Color dotLastColor;
 
-  const DotColor({
+  const BubblesColor({
     @required this.dotPrimaryColor,
     @required this.dotSecondaryColor,
     this.dotThirdColor,
@@ -22,6 +22,15 @@ class DotColor {
 
   Color get dotLastColorReal =>
       dotLastColor == null ? dotSecondaryColor : dotLastColor;
+}
+
+class CircleColor {
+  final Color start;
+  final Color end;
+  const CircleColor({
+    @required this.start,
+    @required this.end,
+  });
 }
 
 class OvershootCurve extends Curve {
@@ -39,5 +48,17 @@ class OvershootCurve extends Curve {
   @override
   String toString() {
     return '$runtimeType($period)';
+  }
+}
+
+class LikeCountClip extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    return Offset.zero & size;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return true;
   }
 }

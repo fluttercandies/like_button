@@ -29,7 +29,6 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
   @override
   void dispose() {
     listSourceRepository.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -130,35 +129,33 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                     size: 20.0,
                                     isLiked: item.is_favorite,
                                     likeCount: item.favorites,
-                                    countBuilder: (int count, bool isLiked) {
+                                    countBuilder:
+                                        (int count, bool isLiked, String text) {
                                       var color = isLiked
                                           ? Colors.pinkAccent
-                                          : Colors.white;
-
+                                          : Colors.grey;
                                       Widget result;
                                       if (count == 0) {
                                         result = Text(
-                                          "Like",
+                                          "love",
                                           style: TextStyle(color: color),
                                         );
                                       } else
                                         result = Text(
                                           count >= 1000
                                               ? (count / 1000.0)
-                                                      .toStringAsFixed(2) +
+                                                      .toStringAsFixed(1) +
                                                   "k"
-                                              : count.toString(),
+                                              : text,
                                           style: TextStyle(color: color),
                                         );
-
-                                      return Padding(
-                                        child: result,
-                                        padding: EdgeInsets.only(left: 3.0),
-                                      );
+                                      return result;
                                     },
-                                    enableLikeCountAnimation:
-                                        item.favorites < 1000,
-                                    click: (bool isLiked) {
+                                    likeCountAnimationType:
+                                        item.favorites < 1000
+                                            ? LikeCountAnimationType.part
+                                            : LikeCountAnimationType.none,
+                                    onTap: (bool isLiked) {
                                       return onClick(isLiked, item);
                                     },
                                   ),
@@ -189,6 +186,8 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
       item.favorites =
           item.is_favorite ? item.favorites + 1 : item.favorites - 1;
       //print(item.favorites);
+
+      //return null, if your request is failed
       completer.complete(item.is_favorite);
     });
     return completer.future;

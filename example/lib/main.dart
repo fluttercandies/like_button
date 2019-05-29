@@ -53,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Page> pages = new List<Page>();
   @override
   void initState() {
-    // TODO: implement initState
     pages.add(Page(
         PageType.likeButton,
         "like button"
@@ -71,8 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     var content = ListView.builder(
       itemBuilder: (_, int index) {
         var page = pages[index];
