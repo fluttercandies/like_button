@@ -53,6 +53,33 @@ and you can also define custom effects.
              ),
 ```
 
+## When send your request
+```dart
+         LikeButton(
+                onTap: (bool isLiked) 
+                {
+                  return onLikeButtonTap(isLiked, item);
+                  },)
+```
+
+```dart
+ Future<bool> onLikeButtonTap(bool isLiked, TuChongItem item) {
+    ///send your request here
+    ///
+    final Completer<bool> completer = new Completer<bool>();
+    Timer(const Duration(milliseconds: 200), () {
+      item.is_favorite = !item.is_favorite;
+      item.favorites =
+          item.is_favorite ? item.favorites + 1 : item.favorites - 1;
+
+      // if your request is failed,return null,
+      completer.complete(item.is_favorite);
+    });
+    return completer.future;
+  }
+```
+[more detail](https://github.com/fluttercandies/like_button/blob/master/example/lib/photo_view_demo.dart)
+
 
 ## parameters
 | parameter | description | default |
@@ -72,3 +99,5 @@ and you can also define custom effects.
 | likeCountAnimationDuration | animation duration to change like count | const Duration(milliseconds: 500)  |
 | likeCountAnimationType | animation type to change like count(none,part,all) | LikeCountAnimationType.part |
 | likeCountPadding | padding for like count widget | const EdgeInsets.only(left: 3.0) |
+
+[more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)

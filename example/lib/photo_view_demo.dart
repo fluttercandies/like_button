@@ -156,7 +156,7 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                             ? LikeCountAnimationType.part
                                             : LikeCountAnimationType.none,
                                     onTap: (bool isLiked) {
-                                      return onClick(isLiked, item);
+                                      return onLikeButtonTap(isLiked, item);
                                     },
                                   ),
                                 ],
@@ -177,17 +177,16 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
     );
   }
 
-  Future<bool> onClick(bool isLiked, TuChongItem item) {
-    ///send your request
+  Future<bool> onLikeButtonTap(bool isLiked, TuChongItem item) {
+    ///send your request here
     ///
     final Completer<bool> completer = new Completer<bool>();
     Timer(const Duration(milliseconds: 200), () {
       item.is_favorite = !item.is_favorite;
       item.favorites =
           item.is_favorite ? item.favorites + 1 : item.favorites - 1;
-      //print(item.favorites);
 
-      //return null, if your request is failed
+      // if your request is failed,return null,
       completer.complete(item.is_favorite);
     });
     return completer.future;
