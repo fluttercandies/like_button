@@ -61,7 +61,7 @@ class LikeButton extends StatefulWidget {
     this.size: 30.0,
     this.likeBuilder,
     this.countBuilder,
-    double dotSize,
+    double bubblesSize,
     double circleSize,
     this.likeCount,
     this.isLiked: false,
@@ -85,7 +85,7 @@ class LikeButton extends StatefulWidget {
         assert(bubblesColor != null),
         assert(isLiked != null),
         assert(mainAxisAlignment != null),
-        bubblesSize = dotSize ?? size * 2.0,
+        bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
 
@@ -117,16 +117,8 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         AnimationController(duration: widget.animationDuration, vsync: this);
     _likeCountController = AnimationController(
         duration: widget.likeCountAnimationDuration, vsync: this);
-    _slideOldValueAnimation = _likeCountController.drive(Tween<Offset>(
-      begin: Offset.zero,
-      end: Offset(0.0, 1.0),
-    ));
-    _slideNewValueAnimation = _likeCountController.drive(Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: Offset.zero,
-    ));
 
-    _initAllAmimations();
+    _initAnimations();
   }
 
   @override
@@ -341,7 +333,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     }
   }
 
-  void _initAllAmimations() {
+  void _initAnimations() {
     outerCircle = new Tween<double>(
       begin: 0.1,
       end: 1.0,
@@ -394,5 +386,14 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
+
+    _slideOldValueAnimation = _likeCountController.drive(Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(0.0, 1.0),
+    ));
+    _slideNewValueAnimation = _likeCountController.drive(Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: Offset.zero,
+    ));
   }
 }
