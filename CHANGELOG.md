@@ -1,7 +1,11 @@
+## [0.1.2] 
+
+* Add OpacityAnimation for LikeCountAnimationType.part
+
 ## [0.1.1] 
 
 * Update readme
-* change dotSize to bubblesSize
+* Change dotSize to bubblesSize
 
 ## [0.1.0] 
 

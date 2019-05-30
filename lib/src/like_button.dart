@@ -95,13 +95,14 @@ class LikeButton extends StatefulWidget {
 
 class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   AnimationController _controller;
-  Animation<double> outerCircle;
-  Animation<double> innerCircle;
-  Animation<double> scale;
-  Animation<double> dots;
-  Animation<Offset> _slideOldValueAnimation;
-  Animation<Offset> _slideNewValueAnimation;
+  Animation<double> _outerCircleAnimation;
+  Animation<double> _innerCircleAnimation;
+  Animation<double> _scaleAnimation;
+  Animation<double> _bubblesAnimation;
+  Animation<Offset> _slidePreValueAnimation;
+  Animation<Offset> _slideCurrentValueAnimation;
   AnimationController _likeCountController;
+  Animation<double> _opacityAnimation;
 
   bool _isLiked = false;
   int _likeCount;
@@ -151,7 +152,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
                     child: CustomPaint(
                       size: Size(widget.bubblesSize, widget.bubblesSize),
                       painter: BubblesPainter(
-                        currentProgress: dots.value,
+                        currentProgress: _bubblesAnimation.value,
                         color1: widget.bubblesColor.dotPrimaryColor,
                         color2: widget.bubblesColor.dotSecondaryColor,
                         color3: widget.bubblesColor.dotThirdColorReal,
@@ -165,8 +166,8 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
                     child: CustomPaint(
                       size: Size(widget.circleSize, widget.circleSize),
                       painter: CirclePainter(
-                        innerCircleRadiusProgress: innerCircle.value,
-                        outerCircleRadiusProgress: outerCircle.value,
+                        innerCircleRadiusProgress: _innerCircleAnimation.value,
+                        outerCircleRadiusProgress: _outerCircleAnimation.value,
                         circleColor: widget.circleColor,
                       ),
                     ),
@@ -177,7 +178,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     child: Transform.scale(
                       scale: (_isLiked && _controller.isAnimating)
-                          ? scale.value
+                          ? _scaleAnimation.value
                           : 1.0,
                       child: SizedBox(
                         child: likeWidget,
@@ -222,35 +223,51 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       var samePart = likeCount.substring(0, didIndex);
       var preText = preLikeCount.substring(didIndex, preLikeCount.length);
       var text = likeCount.substring(didIndex, likeCount.length);
-      var sameWidget = _createLikeCountWidget(_likeCount, _isLiked, samePart);
-      var oldWidget = _createLikeCountWidget(_preLikeCount, !_isLiked, preText);
+      var preSameWidget =
+          _createLikeCountWidget(_preLikeCount, !_isLiked, samePart);
+      var currentSameWidget =
+          _createLikeCountWidget(_likeCount, _isLiked, samePart);
+      var preWidget = _createLikeCountWidget(_preLikeCount, !_isLiked, preText);
       var currentWidget = _createLikeCountWidget(_likeCount, _isLiked, text);
 
-      result = Row(
-        children: <Widget>[
-          sameWidget,
-          AnimatedBuilder(
-              animation: _likeCountController,
-              builder: (b, w) {
-                return Stack(
+      result = AnimatedBuilder(
+          animation: _likeCountController,
+          builder: (b, w) {
+            return Row(
+              children: <Widget>[
+                Stack(
+                  fit: StackFit.passthrough,
+                  overflow: Overflow.clip,
+                  children: <Widget>[
+                    Opacity(
+                      child: currentSameWidget,
+                      opacity: _opacityAnimation.value,
+                    ),
+                    Opacity(
+                      child: preSameWidget,
+                      opacity: 1.0 - _opacityAnimation.value,
+                    ),
+                  ],
+                ),
+                Stack(
                   fit: StackFit.passthrough,
                   overflow: Overflow.clip,
                   children: <Widget>[
                     FractionalTranslation(
                         translation: _preLikeCount > _likeCount
-                            ? _slideNewValueAnimation.value
-                            : -_slideNewValueAnimation.value,
+                            ? _slideCurrentValueAnimation.value
+                            : -_slideCurrentValueAnimation.value,
                         child: currentWidget),
                     FractionalTranslation(
                         translation: _preLikeCount > _likeCount
-                            ? _slideOldValueAnimation.value
-                            : -_slideOldValueAnimation.value,
-                        child: oldWidget),
+                            ? _slidePreValueAnimation.value
+                            : -_slidePreValueAnimation.value,
+                        child: preWidget),
                   ],
-                );
-              })
-        ],
-      );
+                )
+              ],
+            );
+          });
     } else {
       result = AnimatedBuilder(
         animation: _likeCountController,
@@ -261,14 +278,14 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
             children: <Widget>[
               FractionalTranslation(
                   translation: _preLikeCount > _likeCount
-                      ? _slideNewValueAnimation.value
-                      : -_slideNewValueAnimation.value,
+                      ? _slideCurrentValueAnimation.value
+                      : -_slideCurrentValueAnimation.value,
                   child: _createLikeCountWidget(
                       _likeCount, _isLiked, _likeCount.toString())),
               FractionalTranslation(
                   translation: _preLikeCount > _likeCount
-                      ? _slideOldValueAnimation.value
-                      : -_slideOldValueAnimation.value,
+                      ? _slidePreValueAnimation.value
+                      : -_slidePreValueAnimation.value,
                   child: _createLikeCountWidget(
                       _preLikeCount, !_isLiked, _preLikeCount.toString())),
             ],
@@ -334,7 +351,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   }
 
   void _initAnimations() {
-    outerCircle = new Tween<double>(
+    _outerCircleAnimation = new Tween<double>(
       begin: 0.1,
       end: 1.0,
     ).animate(
@@ -347,7 +364,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
-    innerCircle = new Tween<double>(
+    _innerCircleAnimation = new Tween<double>(
       begin: 0.2,
       end: 1.0,
     ).animate(
@@ -360,7 +377,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
-    scale = new Tween<double>(
+    _scaleAnimation = new Tween<double>(
       begin: 0.2,
       end: 1.0,
     ).animate(
@@ -373,7 +390,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
-    dots = new Tween<double>(
+    _bubblesAnimation = new Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(
@@ -387,13 +404,18 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       ),
     );
 
-    _slideOldValueAnimation = _likeCountController.drive(Tween<Offset>(
+    _slidePreValueAnimation = _likeCountController.drive(Tween<Offset>(
       begin: Offset.zero,
       end: Offset(0.0, 1.0),
     ));
-    _slideNewValueAnimation = _likeCountController.drive(Tween<Offset>(
+    _slideCurrentValueAnimation = _likeCountController.drive(Tween<Offset>(
       begin: const Offset(0.0, -1.0),
       end: Offset.zero,
+    ));
+
+    _opacityAnimation = _likeCountController.drive(Tween<double>(
+      begin: 0.0,
+      end: 1.0,
     ));
   }
 }

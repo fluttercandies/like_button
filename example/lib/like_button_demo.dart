@@ -47,7 +47,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
               likeCountAnimationType: likeCount < 1000
                   ? LikeCountAnimationType.part
                   : LikeCountAnimationType.none,
-              likeCountPadding: EdgeInsets.only(left: 10.0),
+              likeCountPadding: EdgeInsets.only(left: 15.0),
             ),
             LikeButton(
               size: buttonSize,
@@ -80,6 +80,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   );
                 return result;
               },
+              likeCountPadding: EdgeInsets.only(left: 15.0),
             ),
             LikeButton(
               size: buttonSize,
@@ -98,6 +99,22 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
               },
               likeCount: 665,
               likeCountAnimationType: LikeCountAnimationType.all,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = isLiked ? Colors.green : Colors.grey;
+                Widget result;
+                if (count == 0) {
+                  result = Text(
+                    "love",
+                    style: TextStyle(color: color),
+                  );
+                } else
+                  result = Text(
+                    text,
+                    style: TextStyle(color: color),
+                  );
+                return result;
+              },
+              likeCountPadding: EdgeInsets.only(left: 15.0),
             ),
             LikeButton(
               size: buttonSize,
