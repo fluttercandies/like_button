@@ -294,6 +294,11 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       );
     }
 
+    result = ClipRect(
+      child: result,
+      clipper: LikeCountClip(),
+    );
+
     if (widget.likeCountPadding != null) {
       result = Padding(
         padding: widget.likeCountPadding,
@@ -301,10 +306,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       );
     }
 
-    return ClipRect(
-      child: result,
-      clipper: LikeCountClip(),
-    );
+    return result;
   }
 
   Widget _createLikeCountWidget(int likeCount, bool isLiked, String text) {

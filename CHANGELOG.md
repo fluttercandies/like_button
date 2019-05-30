@@ -1,3 +1,7 @@
+## [0.1.3] 
+
+* Clip rect before padding(like count)
+
 ## [0.1.2] 
 
 * Add OpacityAnimation for LikeCountAnimationType.part
