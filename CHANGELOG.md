@@ -1,3 +1,7 @@
+## [0.1.4] 
+
+* Support to always show like animation and increase like count by setting isLiked to null.
+
 ## [0.1.3] 
 
 * Clip rect before padding(like count)

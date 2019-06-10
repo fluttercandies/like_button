@@ -118,7 +118,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
-              isLiked: true,
+              isLiked: null,
               circleColor: CircleColor(
                 start: Colors.redAccent[100],
                 end: Colors.redAccent[400],
@@ -130,10 +130,27 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
               likeBuilder: (bool isLiked) {
                 return Icon(
                   Icons.assistant_photo,
-                  color: isLiked ? Colors.red : Colors.grey,
+                  color: Colors.red,
                   size: buttonSize,
                 );
               },
+              likeCount: 888,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = Colors.red;
+                Widget result;
+                if (count == 0) {
+                  result = Text(
+                    "love",
+                    style: TextStyle(color: color),
+                  );
+                } else
+                  result = Text(
+                    text,
+                    style: TextStyle(color: color),
+                  );
+                return result;
+              },
+              likeCountPadding: EdgeInsets.only(left: 15.0),
             ),
             LikeButton(
               size: buttonSize,

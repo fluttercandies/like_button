@@ -93,7 +93,7 @@ and you can also define custom effects.
 | circleSize | final size of circle | size * 0.8 |
 | circleColor | colors of circle | const CircleColor(start: const Color(0xFFFF5722), end: const Color(0xFFFFC107) |
 | onTap |  tap call back of like button | you can handle your request in this call back |
-| isLiked | whether it is liked | false |
+| isLiked | whether it is liked(if it's null, always show like animation and increase like count) | false |
 | likeCount | if null, will not show) | null |
 | mainAxisAlignment | MainAxisAlignment for like button | MainAxisAlignment.center |
 | likeBuilder | builder to create like widget| null |
