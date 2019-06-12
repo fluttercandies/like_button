@@ -1,3 +1,7 @@
+## [0.1.5] 
+
+* Issue: fix likeCount/isLiked are not updated when rebuild.
+
 ## [0.1.4] 
 
 * Support to always show like animation and increase like count by setting isLiked to null.

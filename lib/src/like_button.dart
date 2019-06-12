@@ -123,6 +123,32 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   }
 
   @override
+  void didUpdateWidget(LikeButton oldWidget) {
+    if (oldWidget.isLiked != widget.isLiked) {
+      _isLiked = widget.isLiked;
+    }
+
+    if (oldWidget.likeCount != widget.likeCount) {
+      _likeCount = widget.likeCount;
+      _preLikeCount = _likeCount;
+    }
+
+    if (oldWidget.animationDuration != widget.animationDuration) {
+      _controller =
+          AnimationController(duration: widget.animationDuration, vsync: this);
+      _initControlAnimation();
+    }
+
+    if (oldWidget.likeCountAnimationDuration !=
+        widget.likeCountAnimationDuration) {
+      _likeCountController = AnimationController(
+          duration: widget.likeCountAnimationDuration, vsync: this);
+      _initLikeCountControllerAnimation();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _likeCountController.dispose();
@@ -374,6 +400,27 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   }
 
   void _initAnimations() {
+    _initControlAnimation();
+    _initLikeCountControllerAnimation();
+  }
+
+  void _initLikeCountControllerAnimation() {
+    _slidePreValueAnimation = _likeCountController.drive(Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(0.0, 1.0),
+    ));
+    _slideCurrentValueAnimation = _likeCountController.drive(Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: Offset.zero,
+    ));
+
+    _opacityAnimation = _likeCountController.drive(Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ));
+  }
+
+  void _initControlAnimation() {
     _outerCircleAnimation = new Tween<double>(
       begin: 0.1,
       end: 1.0,
@@ -426,19 +473,5 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
-
-    _slidePreValueAnimation = _likeCountController.drive(Tween<Offset>(
-      begin: Offset.zero,
-      end: Offset(0.0, 1.0),
-    ));
-    _slideCurrentValueAnimation = _likeCountController.drive(Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: Offset.zero,
-    ));
-
-    _opacityAnimation = _likeCountController.drive(Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ));
   }
 }
