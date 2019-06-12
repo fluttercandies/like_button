@@ -1,4 +1,4 @@
-## [0.1.5] 
+## [0.1.6] 
 
 * Issue: fix likeCount/isLiked are not updated when rebuild.
 

@@ -124,27 +124,17 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   @override
   void didUpdateWidget(LikeButton oldWidget) {
-    if (oldWidget.isLiked != widget.isLiked) {
-      _isLiked = widget.isLiked;
-    }
+    _isLiked = widget.isLiked;
+    _likeCount = widget.likeCount;
+    _preLikeCount = _likeCount;
 
-    if (oldWidget.likeCount != widget.likeCount) {
-      _likeCount = widget.likeCount;
-      _preLikeCount = _likeCount;
-    }
+    _controller =
+        AnimationController(duration: widget.animationDuration, vsync: this);
+    _likeCountController = AnimationController(
+        duration: widget.likeCountAnimationDuration, vsync: this);
 
-    if (oldWidget.animationDuration != widget.animationDuration) {
-      _controller =
-          AnimationController(duration: widget.animationDuration, vsync: this);
-      _initControlAnimation();
-    }
+    _initAnimations();
 
-    if (oldWidget.likeCountAnimationDuration !=
-        widget.likeCountAnimationDuration) {
-      _likeCountController = AnimationController(
-          duration: widget.likeCountAnimationDuration, vsync: this);
-      _initLikeCountControllerAnimation();
-    }
     super.didUpdateWidget(oldWidget);
   }
 

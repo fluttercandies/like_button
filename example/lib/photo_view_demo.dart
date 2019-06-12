@@ -8,11 +8,17 @@ import 'package:example/common/crop_image.dart';
 import 'package:example/common/push_to_refresh_header.dart';
 import 'package:example/common/tu_chong_repository.dart';
 import 'package:example/common/tu_chong_source.dart';
+import 'package:extended_text/extended_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide CircularProgressIndicator;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'common/my_extended_text_selection_controls.dart';
+import 'special_text/my_special_text_span_builder.dart';
 
 class PhotoViewDemo extends StatefulWidget {
   @override
@@ -21,11 +27,23 @@ class PhotoViewDemo extends StatefulWidget {
 
 class _PhotoViewDemoState extends State<PhotoViewDemo> {
   TuChongRepository listSourceRepository = TuChongRepository();
+  MyExtendedMaterialTextSelectionControls
+      _myExtendedMaterialTextSelectionControls;
+  final String _attachContent =
+      "[love]Extended text help you to build rich text quickly. any special text you will have with extended text.It's my pleasure to invite you to join \$FlutterCandies\$ if you want to improve flutter .[love] if you meet any problem, please let me konw @zmtzawqlp .[sun_glasses]";
+
+  @override
+  void initState() {
+    _myExtendedMaterialTextSelectionControls =
+        MyExtendedMaterialTextSelectionControls();
+    super.initState();
+  }
 
   //if you can't konw image size before build,
   //you have to handle copy when image is loaded.
   bool konwImageSize = true;
   DateTime dateTimeNow = DateTime.now();
+
   @override
   void dispose() {
     listSourceRepository.dispose();
@@ -36,7 +54,7 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
   Widget build(BuildContext context) {
     final double margin = ScreenUtil.instance.setWidth(30);
 
-    return Material(
+    Widget result = Material(
       child: Column(
         children: <Widget>[
           AppBar(
@@ -70,6 +88,9 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                           title = "Image$index";
                         }
 
+                        var content = item.content ?? (item.excerpt ?? title);
+                        content += this._attachContent;
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,22 +104,61 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                   style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(34))),
                             ),
-                            item.content == null || item.content == ""
-                                ? Container()
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                        left: margin, right: margin),
-                                    child: Text(
-                                      item.content ?? "",
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                CropImage(item, index, margin, konwImageSize,
+                                    listSourceRepository),
+                                Expanded(
+                                  child: Padding(
+                                    child: ExtendedText(
+                                      content,
+                                      onSpecialTextTap: (dynamic parameter) {
+                                        if (parameter.startsWith("\$")) {
+                                          launch(
+                                              "https://github.com/fluttercandies");
+                                        } else if (parameter.startsWith("@")) {
+                                          launch("mailto:zmtzawqlp@live.com");
+                                        }
+                                      },
+                                      specialTextSpanBuilder:
+                                          MySpecialTextSpanBuilder(),
+                                      //overflow: ExtendedTextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize:
                                               ScreenUtil.instance.setSp(28),
                                           color: Colors.grey),
-                                    )),
-                            CropImage(item, index, margin, konwImageSize,
-                                listSourceRepository),
+                                      maxLines: 10,
+                                      overFlowTextSpan: OverFlowTextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(text: '  \u2026  '),
+                                            TextSpan(
+                                                text: "more detail",
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+                                                ),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        launch(
+                                                            "https://github.com/fluttercandies/extended_text");
+                                                      })
+                                          ],
+                                          background:
+                                              Theme.of(context).canvasColor),
+                                      selectionEnabled: true,
+                                      textSelectionControls:
+                                          _myExtendedMaterialTextSelectionControls,
+                                    ),
+                                    padding: EdgeInsets.only(
+                                        left: margin,
+                                        right: margin,
+                                        bottom: margin),
+                                  ),
+                                )
+                              ],
+                            ),
                             Container(
                               padding:
                                   EdgeInsets.only(left: margin, right: margin),
@@ -115,9 +175,6 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                       Icon(
                                         Icons.comment,
                                         color: Colors.amberAccent,
-                                      ),
-                                      SizedBox(
-                                        width: 5.0,
                                       ),
                                       Text(
                                         item.comments.toString(),
@@ -174,6 +231,32 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
           )
         ],
       ),
+    );
+
+    return ExtendedTextSelectionPointerHandler(
+      //default behavior
+      // child: result,
+      //custom your behavior
+      builder: (states) {
+        return Listener(
+          child: result,
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (value) {
+            for (var state in states) {
+              if (!state.containsPosition(value.position)) {
+                //clear other selection
+                state.clearSelection();
+              }
+            }
+          },
+          onPointerMove: (value) {
+            //clear other selection
+            for (var state in states) {
+              state.clearSelection();
+            }
+          },
+        );
+      },
     );
   }
 
