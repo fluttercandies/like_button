@@ -4,7 +4,7 @@
 
 文档语言: [English](README.md) | [中文简体](README-ZH.md)
 
-Like Button 支持像推特点赞效果一样，并且有喜欢数量动画的Flutter库.
+Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 
 感谢 [jd-alexander](https://github.com/jd-alexander/LikeButton) and [吉原拉面](https://github.com/yumi0629/FlutterUI/tree/master/lib/likebutton) 对点赞动画的原理的开源。
 
