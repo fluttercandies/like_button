@@ -15,9 +15,9 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 ![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/photo_view.gif)
 
 - [like_button](#likebutton)
-  - [How to use it.](#How-to-use-it)
-  - [The time to send your request](#The-time-to-send-your-request)
-  - [parameters](#parameters)
+  - [如何使用.](#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
+  - [什么时候去请求服务改变状态](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8E%BB%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1%E6%94%B9%E5%8F%98%E7%8A%B6%E6%80%81)
+  - [参数](#%E5%8F%82%E6%95%B0)
 
 ##  如何使用.
 
