@@ -6,10 +6,9 @@ import 'dart:convert';
 
 class TuChongRepository extends LoadingMoreBase<TuChongItem> {
   int pageindex = 1;
-
-  @override
   bool _hasMore = true;
   bool forceRefresh = false;
+  @override
   bool get hasMore => (_hasMore && length < 100) || forceRefresh;
 
   @override
@@ -30,7 +29,7 @@ class TuChongRepository extends LoadingMoreBase<TuChongItem> {
     if (this.length == 0) {
       url = "https://api.tuchong.com/feed-app";
     } else {
-      int lastPostId = this[this.length - 1].post_id;
+      int lastPostId = this[this.length - 1].postId;
       url =
           "https://api.tuchong.com/feed-app?post_id=$lastPostId&page=$pageindex&type=loadmore";
     }
@@ -57,9 +56,10 @@ class TuChongRepository extends LoadingMoreBase<TuChongItem> {
 //      this.clear();
 //      _hasMore=false;
       isSuccess = true;
-    } catch (exception) {
+    } catch (exception, stack) {
       isSuccess = false;
       print(exception);
+      print(stack);
     }
     return isSuccess;
   }

@@ -170,6 +170,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             ),
             LikeButton(
               size: buttonSize,
+              isLiked: null,
               circleColor: CircleColor(
                 start: Colors.grey[200],
                 end: Colors.grey[400],
@@ -185,6 +186,24 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   size: buttonSize,
                 );
               },
+              likeCount: 888,
+              postion: Postion.left,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = Colors.grey;
+                Widget result;
+                if (count == 0) {
+                  result = Text(
+                    "love",
+                    style: TextStyle(color: color),
+                  );
+                } else
+                  result = Text(
+                    text,
+                    style: TextStyle(color: color),
+                  );
+                return result;
+              },
+              likeCountPadding: EdgeInsets.only(right: 15.0),
             ),
           ],
           gridDelegate:

@@ -26,12 +26,10 @@ class PhotoViewDemo extends StatefulWidget {
 }
 
 class _PhotoViewDemoState extends State<PhotoViewDemo> {
-  TuChongRepository listSourceRepository = TuChongRepository();
   MyExtendedMaterialTextSelectionControls
       _myExtendedMaterialTextSelectionControls;
   final String _attachContent =
       "[love]Extended text help you to build rich text quickly. any special text you will have with extended text.It's my pleasure to invite you to join \$FlutterCandies\$ if you want to improve flutter .[love] if you meet any problem, please let me konw @zmtzawqlp .[sun_glasses]";
-
   @override
   void initState() {
     _myExtendedMaterialTextSelectionControls =
@@ -39,11 +37,12 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
     super.initState();
   }
 
+  TuChongRepository listSourceRepository = TuChongRepository();
+
   //if you can't konw image size before build,
   //you have to handle copy when image is loaded.
   bool konwImageSize = true;
   DateTime dateTimeNow = DateTime.now();
-
   @override
   void dispose() {
     listSourceRepository.dispose();
@@ -52,7 +51,7 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
 
   @override
   Widget build(BuildContext context) {
-    final double margin = ScreenUtil.instance.setWidth(30);
+    final double margin = ScreenUtil.instance.setWidth(22);
 
     Widget result = Material(
       child: Column(
@@ -131,22 +130,20 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                           color: Colors.grey),
                                       maxLines: 10,
                                       overFlowTextSpan: OverFlowTextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(text: '  \u2026  '),
-                                            TextSpan(
-                                                text: "more detail",
-                                                style: TextStyle(
-                                                  color: Colors.blue,
-                                                ),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        launch(
-                                                            "https://github.com/fluttercandies/extended_text");
-                                                      })
-                                          ],
-                                          background:
-                                              Theme.of(context).canvasColor),
+                                        children: <TextSpan>[
+                                          TextSpan(text: '  \u2026  '),
+                                          TextSpan(
+                                              text: "more detail",
+                                              style: TextStyle(
+                                                color: Colors.blue,
+                                              ),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  launch(
+                                                      "https://github.com/fluttercandies/extended_text");
+                                                })
+                                        ],
+                                      ),
                                       selectionEnabled: true,
                                       textSelectionControls:
                                           _myExtendedMaterialTextSelectionControls,
@@ -184,7 +181,7 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
                                   ),
                                   LikeButton(
                                     size: 20.0,
-                                    isLiked: item.is_favorite,
+                                    isLiked: item.isFavorite,
                                     likeCount: item.favorites,
                                     countBuilder:
                                         (int count, bool isLiked, String text) {
@@ -265,12 +262,12 @@ class _PhotoViewDemoState extends State<PhotoViewDemo> {
     ///
     final Completer<bool> completer = new Completer<bool>();
     Timer(const Duration(milliseconds: 200), () {
-      item.is_favorite = !item.is_favorite;
+      item.isFavorite = !item.isFavorite;
       item.favorites =
-          item.is_favorite ? item.favorites + 1 : item.favorites - 1;
+          item.isFavorite ? item.favorites + 1 : item.favorites - 1;
 
       // if your request is failed,return null,
-      completer.complete(item.is_favorite);
+      completer.complete(item.isFavorite);
     });
     return completer.future;
   }

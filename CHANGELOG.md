@@ -1,3 +1,8 @@
+## [0.1.7] 
+
+* Feature:
+  Add postion(left,right) support for like count widget
+
 ## [0.1.6] 
 
 * Issue: fix likeCount/isLiked are not updated when rebuild.
