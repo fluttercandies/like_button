@@ -19,7 +19,8 @@ class EmojiText extends SpecialText {
       ///fontSize 26 and text height =30.0
       //final double fontSize = 26.0;
 
-      return ImageSpan(AssetImage(EmojiUitl.instance.emojiMap[key]),
+      return ImageSpan(
+          AssetImage(EmojiUitl.instance.emojiMap[key]),
           actualText: key,
           imageWidth: size,
           imageHeight: size,
