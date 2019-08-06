@@ -1,3 +1,8 @@
+## [0.1.8] 
+
+* Add padding parameter for LikeButton
+* Change bubbles' position to make them more clear.
+
 ## [0.1.7] 
 
 * Feature:

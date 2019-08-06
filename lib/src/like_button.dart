@@ -66,6 +66,9 @@ class LikeButton extends StatefulWidget {
   ///right of like widget
   final Postion postion;
 
+  /// padding of like button
+  final EdgeInsetsGeometry padding;
+
   const LikeButton(
       {Key key,
       this.size: 30.0,
@@ -89,7 +92,8 @@ class LikeButton extends StatefulWidget {
       this.circleColor = const CircleColor(
           start: const Color(0xFFFF5722), end: const Color(0xFFFFC107)),
       this.onTap,
-      this.postion: Postion.right})
+      this.postion: Postion.right,
+      this.padding})
       : assert(size != null),
         assert(animationDuration != null),
         assert(circleColor != null),
@@ -222,10 +226,13 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: _onTap,
-      child: Row(
-        mainAxisAlignment: widget.mainAxisAlignment,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: children,
+      child: Container(
+        padding: widget.padding,
+        child: Row(
+          mainAxisAlignment: widget.mainAxisAlignment,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: children,
+        ),
       ),
     );
   }
