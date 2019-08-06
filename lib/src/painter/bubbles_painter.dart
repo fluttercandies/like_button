@@ -66,24 +66,29 @@ class BubblesPainter extends CustomPainter {
   }
 
   void _drawOuterBubblesFrame(Canvas canvas) {
+    var start = outerBubblesPositionAngle / 4.0 * 3.0;
     for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
-          currentRadius1 * math.cos(i * degToRad(outerBubblesPositionAngle));
+          currentRadius1 *
+              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
       double cY = centerY +
-          currentRadius1 * math.sin(i * degToRad(outerBubblesPositionAngle));
+          currentRadius1 *
+              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
       canvas.drawCircle(Offset(cX, cY), currentDotSize1,
-          circlePaints[i % circlePaints.length]);
+          circlePaints[(i) % circlePaints.length]);
     }
   }
 
   void _drawInnerBubblesFrame(Canvas canvas) {
+    var start =
+        outerBubblesPositionAngle / 4.0 * 3.0 - outerBubblesPositionAngle / 2.0;
     for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
           currentRadius2 *
-              math.cos((i * degToRad(outerBubblesPositionAngle - 10)));
+              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
       double cY = centerY +
           currentRadius2 *
-              math.sin((i * degToRad(outerBubblesPositionAngle - 10)));
+              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
       canvas.drawCircle(Offset(cX, cY), currentDotSize2,
           circlePaints[(i + 1) % circlePaints.length]);
     }
