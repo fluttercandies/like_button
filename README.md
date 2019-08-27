@@ -1,6 +1,6 @@
 # like_button
 
-[like_button ![pub package](https://img.shields.io/pub/v/like_button.svg)](https://pub.dartlang.org/packages/like_button)
+[![pub package](https://img.shields.io/pub/v/like_button.svg)](https://pub.dartlang.org/packages/like_button) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/like_button)](https://github.com/fluttercandies/like_button/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/like_button)](https://github.com/fluttercandies/like_button/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/like_button)](https://github.com/fluttercandies/like_button/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/like_button)](https://github.com/fluttercandies/like_button/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
 Language: [English](README.md) | [中文简体](README-ZH.md)
 

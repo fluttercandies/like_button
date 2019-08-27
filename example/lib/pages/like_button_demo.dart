@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 ///
 ///  create by zhoumaotuo on 2019/5/27
@@ -7,6 +8,10 @@ import 'package:like_button/like_button.dart';
 
 const double buttonSize = 40.0;
 
+@FFRoute(
+    name: "fluttercandies://LikeButtonDemo",
+    routeName: "like button",
+    description: "show how to build like button")
 class LikeButtonDemo extends StatefulWidget {
   @override
   _LikeButtonDemoState createState() => _LikeButtonDemoState();
