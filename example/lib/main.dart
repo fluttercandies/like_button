@@ -1,166 +1,101 @@
-import 'package:example/photo_view_demo.dart';
+import 'dart:io';
+
+import 'package:example/pages/no_route.dart';
+import 'package:example/pages/photo_view_demo.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:extended_image_library/extended_image_library.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:oktoast/oktoast.dart';
 
-import 'like_button_demo.dart';
+import 'package:example/pages/like_button_demo.dart';
+
+import 'example_route.dart';
+import 'example_route_helper.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    clearDiskCachedImages(duration: Duration(days: 7));
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return OKToast(
+        child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  List<Page> pages = new List<Page>();
-  @override
-  void initState() {
-    pages.add(Page(
-        PageType.likeButton,
-        "like button"
-        "show how to build like button"));
-    pages.add(Page(
-        PageType.photoView,
-        "photo view"
-        "show how to build like button in photo view"));
-
-    ///clear cache image from 7 days before
-    clearDiskCachedImages(duration: Duration(days: 7));
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var content = ListView.builder(
-      itemBuilder: (_, int index) {
-        var page = pages[index];
-
-        Widget pageWidget;
-        return Container(
-          margin: EdgeInsets.all(20.0),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  (index + 1).toString() +
-                      "." +
-                      page.type.toString().replaceAll("PageType.", ""),
-                  //style: TextStyle(inherit: false),
-                ),
-                Text(
-                  page.description,
-                  style: TextStyle(color: Colors.grey),
-                )
-              ],
-            ),
-            onTap: () {
-              switch (page.type) {
-                case PageType.likeButton:
-                  pageWidget = LikeButtonDemo();
-                  break;
-                case PageType.photoView:
-                  pageWidget = PhotoViewDemo();
-                  break;
-                default:
-                  break;
-              }
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (BuildContext context) {
-                return pageWidget;
-              }));
-            },
-          ),
-        );
-      },
-      itemCount: pages.length,
-    );
-
-    return MaterialApp(
+      navigatorObservers: [
+        FFNavigatorObserver(routeChange: (name) {
+          //you can track page here
+          // print(name);
+        }, showStatusBarChange: (bool showStatusBar) {
+          if (showStatusBar) {
+            SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+          } else {
+            SystemChrome.setEnabledSystemUIOverlays([]);
+          }
+        })
+      ],
       builder: (c, w) {
         ScreenUtil.instance =
             ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
               ..init(c);
-        var data = MediaQuery.of(context);
+        var data = MediaQuery.of(c);
         return MediaQuery(
           data: data.copyWith(textScaleFactor: 1.0),
-          child: Scaffold(
-            body: w,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                ///clear memory
-                clearMemoryImageCache();
-
-                ///clear local cahced
-                clearDiskCachedImages().then((bool done) {
-                  showToast(done ? "clear succeed" : "clear failed",
-                      position: ToastPosition(align: Alignment.center));
-                });
-              },
-              child: Text(
-                "clear cache",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  inherit: false,
-                ),
-              ),
-            ),
-          ),
+          child: w,
         );
       },
-      home: content,
-    );
+      initialRoute: "fluttercandies://mainpage",
+      onGenerateRoute: (RouteSettings settings) {
+        var routeResult =
+            getRouteResult(name: settings.name, arguments: settings.arguments);
+
+        if (routeResult.showStatusBar != null ||
+            routeResult.routeName != null) {
+          settings = FFRouteSettings(
+              arguments: settings.arguments,
+              name: settings.name,
+              isInitialRoute: settings.isInitialRoute,
+              routeName: routeResult.routeName,
+              showStatusBar: routeResult.showStatusBar);
+        }
+
+        var page = routeResult.widget ?? NoRoute();
+
+        switch (routeResult.pageRouteType) {
+          case PageRouteType.material:
+            return MaterialPageRoute(settings: settings, builder: (c) => page);
+          case PageRouteType.cupertino:
+            return CupertinoPageRoute(settings: settings, builder: (c) => page);
+          case PageRouteType.transparent:
+            return Platform.isIOS
+                ? TransparentCupertinoPageRoute(
+                    settings: settings, builder: (c) => page)
+                : TransparentMaterialPageRoute(
+                    settings: settings, builder: (c) => page);
+//            return FFTransparentPageRoute(
+//                settings: settings,
+//                pageBuilder: (BuildContext context, Animation<double> animation,
+//                        Animation<double> secondaryAnimation) =>
+//                    page);
+          default:
+            return Platform.isIOS
+                ? CupertinoPageRoute(settings: settings, builder: (c) => page)
+                : MaterialPageRoute(settings: settings, builder: (c) => page);
+        }
+      },
+    ));
   }
 }
-
-class Page {
-  final PageType type;
-  final String description;
-  Page(this.type, this.description);
-}
-
-enum PageType { likeButton, photoView }
 
 ///save netwrok image to photo
 Future<bool> saveNetworkImageToPhoto(String url, {bool useCache: true}) async {
