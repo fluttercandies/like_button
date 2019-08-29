@@ -1,3 +1,8 @@
+## [0.1.9] 
+
+* Change postion to CountPostion, support top/bottom
+* Add CountDecoration to custom count widget
+
 ## [0.1.8] 
 
 * Add padding parameter for LikeButton

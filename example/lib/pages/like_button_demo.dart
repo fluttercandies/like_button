@@ -192,7 +192,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 );
               },
               likeCount: 888,
-              postion: Postion.left,
+              countPostion: CountPostion.left,
               countBuilder: (int count, bool isLiked, String text) {
                 var color = Colors.grey;
                 Widget result;
@@ -209,6 +209,101 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 return result;
               },
               likeCountPadding: EdgeInsets.only(right: 15.0),
+            ),
+            LikeButton(
+              size: buttonSize,
+              isLiked: null,
+              circleColor: CircleColor(
+                start: Colors.indigoAccent[200],
+                end: Colors.indigoAccent[400],
+              ),
+              bubblesColor: BubblesColor(
+                dotPrimaryColor: Colors.indigoAccent[700],
+                dotSecondaryColor: Colors.indigoAccent[200],
+              ),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  Icons.access_alarm,
+                  color: isLiked ? Colors.indigoAccent[700] : Colors.grey,
+                  size: buttonSize,
+                );
+              },
+              likeCount: 888,
+              countPostion: CountPostion.bottom,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = Colors.grey;
+                Widget result;
+
+                result = Text(
+                  text,
+                  style: TextStyle(color: color),
+                );
+                return result;
+              },
+              likeCountPadding: EdgeInsets.only(top: 15.0),
+              countDecoration: (Widget count) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    count,
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      "loves",
+                      style: TextStyle(color: Colors.indigoAccent),
+                    )
+                  ],
+                );
+              },
+            ),
+            LikeButton(
+              size: buttonSize,
+              isLiked: null,
+              circleColor: CircleColor(
+                start: Colors.orange[200],
+                end: Colors.orange[400],
+              ),
+              bubblesColor: BubblesColor(
+                dotPrimaryColor: Colors.orange[600],
+                dotSecondaryColor: Colors.orange[200],
+              ),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  Icons.camera_alt,
+                  color: isLiked ? Colors.orange[900] : Colors.grey,
+                  size: buttonSize,
+                );
+              },
+              likeCount: 888,
+              countPostion: CountPostion.top,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = Colors.grey;
+                Widget result;
+                result = Text(
+                  text,
+                  style: TextStyle(color: color),
+                );
+                return result;
+              },
+              likeCountPadding: EdgeInsets.only(bottom: 15.0),
+              countDecoration: (Widget count) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    count,
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      "loves",
+                      style: TextStyle(color: Colors.orange),
+                    )
+                  ],
+                );
+              },
             ),
           ],
           gridDelegate:

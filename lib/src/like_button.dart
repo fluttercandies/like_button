@@ -9,11 +9,6 @@ import 'package:like_button/src/utils/like_button_model.dart';
 import 'package:like_button/src/utils/like_button_typedef.dart';
 import 'package:like_button/src/utils/like_button_util.dart';
 
-///like count widget postion
-///left of like widget
-///right of like widget
-enum Postion { left, right }
-
 class LikeButton extends StatefulWidget {
   ///size of like widget
   final double size;
@@ -46,6 +41,9 @@ class LikeButton extends StatefulWidget {
   /// mainAxisAlignment for like button
   final MainAxisAlignment mainAxisAlignment;
 
+  // crossAxisAlignment for like button
+  final CrossAxisAlignment crossAxisAlignment;
+
   ///builder to create like widget
   final LikeWidgetBuilder likeBuilder;
 
@@ -64,10 +62,15 @@ class LikeButton extends StatefulWidget {
   ///like count widget postion
   ///left of like widget
   ///right of like widget
-  final Postion postion;
+  ///top of like widget
+  ///bottom of like widget
+  final CountPostion countPostion;
 
   /// padding of like button
   final EdgeInsetsGeometry padding;
+
+  ///return count widget with decoration
+  final CountDecoration countDecoration;
 
   const LikeButton(
       {Key key,
@@ -79,6 +82,7 @@ class LikeButton extends StatefulWidget {
       this.likeCount,
       this.isLiked: false,
       this.mainAxisAlignment: MainAxisAlignment.center,
+      this.crossAxisAlignment: CrossAxisAlignment.center,
       this.animationDuration = const Duration(milliseconds: 1000),
       this.likeCountAnimationType = LikeCountAnimationType.part,
       this.likeCountAnimationDuration = const Duration(milliseconds: 500),
@@ -92,14 +96,16 @@ class LikeButton extends StatefulWidget {
       this.circleColor = const CircleColor(
           start: const Color(0xFFFF5722), end: const Color(0xFFFFC107)),
       this.onTap,
-      this.postion: Postion.right,
-      this.padding})
+      this.countPostion: CountPostion.right,
+      this.padding,
+      this.countDecoration})
       : assert(size != null),
         assert(animationDuration != null),
         assert(circleColor != null),
         assert(bubblesColor != null),
         //assert(isLiked != null),
         assert(mainAxisAlignment != null),
+        assert(crossAxisAlignment != null),
         bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
@@ -162,6 +168,18 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Widget likeCountWidget = _getLikeCountWidget();
+    if (widget.countDecoration != null) {
+      likeCountWidget =
+          widget.countDecoration(likeCountWidget) ?? likeCountWidget;
+    }
+    if (widget.likeCountPadding != null) {
+      likeCountWidget = Padding(
+        padding: widget.likeCountPadding,
+        child: likeCountWidget,
+      );
+    }
+
     List<Widget> children = <Widget>[
       AnimatedBuilder(
         animation: _controller,
@@ -216,24 +234,37 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           );
         },
       ),
-      _getLikeCountWidget()
+      likeCountWidget
     ];
 
-    if (widget.postion == Postion.left) {
+    if (widget.countPostion == CountPostion.left ||
+        widget.countPostion == CountPostion.top) {
       children = children.reversed.toList();
+    }
+    Widget result = (widget.countPostion == CountPostion.left ||
+            widget.countPostion == CountPostion.right)
+        ? Row(
+            mainAxisAlignment: widget.mainAxisAlignment,
+            crossAxisAlignment: widget.crossAxisAlignment,
+            children: children,
+          )
+        : Column(
+            mainAxisAlignment: widget.mainAxisAlignment,
+            crossAxisAlignment: widget.crossAxisAlignment,
+            children: children,
+          );
+
+    if (widget.padding != null) {
+      result = Padding(
+        padding: widget.padding,
+        child: result,
+      );
     }
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: _onTap,
-      child: Container(
-        padding: widget.padding,
-        child: Row(
-          mainAxisAlignment: widget.mainAxisAlignment,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: children,
-        ),
-      ),
+      child: result,
     );
   }
 
@@ -276,6 +307,8 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           animation: _likeCountController,
           builder: (b, w) {
             return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Stack(
                   fit: StackFit.passthrough,
@@ -340,13 +373,6 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       child: result,
       clipper: LikeCountClip(),
     );
-
-    if (widget.likeCountPadding != null) {
-      result = Padding(
-        padding: widget.likeCountPadding,
-        child: result,
-      );
-    }
 
     return result;
   }

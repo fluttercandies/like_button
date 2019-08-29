@@ -25,3 +25,11 @@ enum LikeCountAnimationType {
   //animation on all
   all,
 }
+
+///like count widget postion
+///left of like widget
+///right of like widget
+enum CountPostion { left, right, top, bottom }
+
+///return count widget with decoration
+typedef CountDecoration = Widget Function(Widget count);

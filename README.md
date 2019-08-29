@@ -14,8 +14,8 @@ Reference codes from [jd-alexander](https://github.com/jd-alexander/LikeButton) 
 ![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/photo_view.gif)
 
 - [like_button](#likebutton)
-  - [How to use it.](#How-to-use-it)
-  - [The time to send your request](#The-time-to-send-your-request)
+  - [How to use it.](#how-to-use-it)
+  - [The time to send your request](#the-time-to-send-your-request)
   - [parameters](#parameters)
 
 ##  How to use it.
@@ -107,6 +107,7 @@ and you can also define custom effects.
 | likeCountAnimationDuration | animation duration to change like count                                               | const Duration(milliseconds: 500)                                                                                                                                                     |
 | likeCountAnimationType     | animation type to change like count(none,part,all)                                    | LikeCountAnimationType.part                                                                                                                                                           |
 | likeCountPadding           | padding for like count widget                                                         | const EdgeInsets.only(left: 3.0)                                                                                                                                                      |
-| postion                    | like count widget postion(left,right).left of like widget or right of like widget     | Postion.right                                                                                                                                                                         |
+| countPostion               | top,right,bottom,left of like button widget                                           | CountPostion.right                                                                                                                                                                    |
+| countDecoration            | decoration of like count widget                                                       | null                                                                                                                                                                                  |
 
 [more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)
