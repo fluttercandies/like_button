@@ -15,9 +15,9 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 ![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/photo_view.gif)
 
 - [like_button](#likebutton)
-  - [如何使用.](#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
-  - [什么时候去请求服务改变状态](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8E%BB%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1%E6%94%B9%E5%8F%98%E7%8A%B6%E6%80%81)
-  - [参数](#%E5%8F%82%E6%95%B0)
+  - [如何使用.](#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8)
+  - [什么时候去请求服务改变状态](#%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e5%8e%bb%e8%af%b7%e6%b1%82%e6%9c%8d%e5%8a%a1%e6%94%b9%e5%8f%98%e7%8a%b6%e6%80%81)
+  - [参数](#%e5%8f%82%e6%95%b0)
 
 ##  如何使用.
 
@@ -108,6 +108,7 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 | likeCountAnimationDuration | 喜欢数量变化动画的时间                                                                                | const Duration(milliseconds: 500)                                                                                                                                                     |
 | likeCountAnimationType     | 喜欢数量动画的类型(none,part,all)。没有动画；只动画改变的部分；全部部分                               | LikeCountAnimationType.part                                                                                                                                                           |
 | likeCountPadding           | like count widget 跟 like widget的间隔                                                                | const EdgeInsets.only(left: 3.0)                                                                                                                                                      |
-| postion                    | like count widget 位置(left,right).在like wiget的左边或者右边                                         | Postion.right                                                                                                                                                                         |
+| countPostion               | top,right,bottom,left. count的位置(上下左右)                                                          | CountPostion.right                                                                                                                                                                    |
+| countDecoration            | count 的修饰器，你可以通过它为count增加其他文字或者效果                                               | null                                                                                                                                                                                  |  |
 
 [more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)
