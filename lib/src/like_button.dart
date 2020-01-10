@@ -168,18 +168,6 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Widget likeCountWidget = _getLikeCountWidget();
-    if (widget.countDecoration != null) {
-      likeCountWidget =
-          widget.countDecoration(likeCountWidget) ?? likeCountWidget;
-    }
-    if (widget.likeCountPadding != null) {
-      likeCountWidget = Padding(
-        padding: widget.likeCountPadding,
-        child: likeCountWidget,
-      );
-    }
-
     List<Widget> children = <Widget>[
       AnimatedBuilder(
         animation: _controller,
@@ -234,7 +222,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           );
         },
       ),
-      likeCountWidget
+      if (_likeCount != null) _getLikeCountWidget(),
     ];
 
     if (widget.countPostion == CountPostion.left ||
@@ -269,7 +257,7 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   }
 
   Widget _getLikeCountWidget() {
-    if (_likeCount == null) return Container();
+    assert(_likeCount != null);
     var likeCount = _likeCount.toString();
     var preLikeCount = _preLikeCount.toString();
 
@@ -373,6 +361,16 @@ class _LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       child: result,
       clipper: LikeCountClip(),
     );
+
+    if (widget.countDecoration != null) {
+      result = widget.countDecoration(result) ?? result;
+    }
+    if (widget.likeCountPadding != null) {
+      result = Padding(
+        padding: widget.likeCountPadding,
+        child: result,
+      );
+    }
 
     return result;
   }
