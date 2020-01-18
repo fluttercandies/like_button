@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:example/common/pic_swiper.dart';
 import 'package:example/common/tu_chong_repository.dart';
@@ -135,7 +134,7 @@ class CropImage extends StatelessWidget {
           width: num300,
           height: num400,
           fit: BoxFit.fill,
-          soucreRect: Rect.fromLTWH(
+          sourceRect: Rect.fromLTWH(
               0.0, 0.0, image.width.toDouble(), 4 * image.width / 3));
       if (n >= 4) {
         imageWidget = Container(
@@ -184,7 +183,7 @@ class CropImage extends StatelessWidget {
         width: num400,
         height: num300,
         fit: BoxFit.fill,
-        soucreRect: Rect.fromLTWH(
+        sourceRect: Rect.fromLTWH(
             (image.width - width) / 2.0, 0.0, width, image.height.toDouble()),
       );
 
