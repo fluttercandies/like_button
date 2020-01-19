@@ -10,9 +10,9 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 
 [Flutter 仿掘金推特点赞按钮](https://juejin.im/post/5cee3b43e51d45773f2e8ed7)  
 
-![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
+[Web Demo for LikeButton](https://fluttercandies.github.io/like_button/)
 
-![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/photo_view.gif)
+![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
 
 - [like_button](#likebutton)
   - [如何使用.](#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8)
@@ -64,31 +64,23 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 
 ## 什么时候去请求服务改变状态
 ```dart
-  LikeButton(
-        onTap: (bool isLiked) 
-        {
-          return onLikeButtonTap(isLiked, item);
-          },)
+    LikeButton(
+      onTap: onLikeButtonTapped,
+    ),
 ```
 这是一个异步回调，你可以等待服务返回之后再改变状态。也可以先改变状态，请求失败之后重置回状态
-```dart
-  Future<bool> onLikeButtonTap(bool isLiked, TuChongItem item) {
-    ///send your request here
-    ///
-    final Completer<bool> completer = new Completer<bool>();
-    Timer(const Duration(milliseconds: 200), () {
-      item.isFavorite = !item.isFavorite;
-      item.favorites =
-          item.isFavorite ? item.favorites + 1 : item.favorites - 1;
 
-      // if your request is failed,return null,
-      completer.complete(item.isFavorite);
-    });
-    return completer.future;
+```dart
+  Future<bool> onLikeButtonTapped(bool isLiked) async{
+    /// send your request here
+    // final bool success= await sendRequest();
+
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+
+    return !isLiked;
   }
 ```
-[more detail](https://github.com/fluttercandies/like_button/blob/master/example/lib/photo_view_demo.dart)
-
 
 ## 参数
 | 参数                       | 描述                                                                                                  | 默认                                                                                                                                                                                  |

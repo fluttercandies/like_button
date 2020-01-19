@@ -31,6 +31,16 @@ class CircleColor {
     @required this.start,
     @required this.end,
   });
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other.runtimeType != runtimeType) return false;
+    final CircleColor typedOther = other;
+    return start == typedOther.start && end == typedOther.end;
+  }
+
+  @override
+  int get hashCode => hashValues(start, end);
 }
 
 class OvershootCurve extends Curve {

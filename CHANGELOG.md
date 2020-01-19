@@ -1,3 +1,8 @@
+## [0.2.0] 
+
+* Support Flutter Web
+* Add web demo
+
 ## [0.1.9] 
 
 * Change postion to CountPostion, support top/bottom

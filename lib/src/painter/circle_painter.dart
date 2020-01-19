@@ -8,7 +8,7 @@ import 'package:like_button/src/utils/like_button_util.dart';
 
 class CirclePainter extends CustomPainter {
   Paint circlePaint = new Paint();
-  Paint maskPaint = new Paint();
+  //Paint maskPaint = new Paint();
 
   final double outerCircleRadiusProgress;
   final double innerCircleRadiusProgress;
@@ -19,20 +19,29 @@ class CirclePainter extends CustomPainter {
       @required this.innerCircleRadiusProgress,
       this.circleColor = const CircleColor(
           start: const Color(0xFFFF5722), end: const Color(0xFFFFC107))}) {
-    circlePaint..style = PaintingStyle.fill;
-    maskPaint..blendMode = BlendMode.clear;
+    //circlePaint..style = PaintingStyle.fill;
+    circlePaint..style = PaintingStyle.stroke;
+    //maskPaint..blendMode = BlendMode.clear;
   }
 
   @override
   void paint(Canvas canvas, Size size) {
     double center = size.width * 0.5;
     _updateCircleColor();
-    canvas.saveLayer(Offset.zero & size, Paint());
-    canvas.drawCircle(Offset(center, center),
-        outerCircleRadiusProgress * center, circlePaint);
-    canvas.drawCircle(Offset(center, center),
-        innerCircleRadiusProgress * center + 1, maskPaint);
-    canvas.restore();
+    // canvas.saveLayer(Offset.zero & size, Paint());
+    // canvas.drawCircle(Offset(center, center),
+    //     outerCircleRadiusProgress * center, circlePaint);
+    // canvas.drawCircle(Offset(center, center),
+    //     innerCircleRadiusProgress * center + 1, maskPaint);
+    // canvas.restore();
+    //flutter web don't support BlendMode.clear.
+    final strokeWidth = outerCircleRadiusProgress * center -
+        (innerCircleRadiusProgress * center);
+    if (strokeWidth > 0.0) {
+      circlePaint..strokeWidth = strokeWidth;
+      canvas.drawCircle(Offset(center, center),
+          outerCircleRadiusProgress * center, circlePaint);
+    }
   }
 
   void _updateCircleColor() {
@@ -44,6 +53,11 @@ class CirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+    if (oldDelegate.runtimeType != this.runtimeType) return true;
+    final CirclePainter old = oldDelegate;
+
+    return old.outerCircleRadiusProgress != old.outerCircleRadiusProgress ||
+        old.innerCircleRadiusProgress != old.innerCircleRadiusProgress ||
+        old.circleColor != old.circleColor;
   }
 }
