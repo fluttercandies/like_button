@@ -9,9 +9,9 @@ Like Button is a flutter library that allows you to create a button with animati
 Reference codes from [jd-alexander](https://github.com/jd-alexander/LikeButton) and [吉原拉面](https://github.com/yumi0629/FlutterUI/tree/master/lib/likebutton) ,thank them for open source code.
 
 
-![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
+[Web Demo for LikeButton](https://fluttercandies.github.io/like_button/)
 
-![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/photo_view.gif)
+![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
 
 - [like_button](#likebutton)
   - [How to use it.](#how-to-use-it)
@@ -63,31 +63,22 @@ and you can also define custom effects.
 
 ## The time to send your request
 ```dart
-  LikeButton(
-        onTap: (bool isLiked) 
-        {
-          return onLikeButtonTap(isLiked, item);
-          },)
+    LikeButton(
+      onTap: onLikeButtonTapped,
+    ),
 ```
 
 ```dart
-  Future<bool> onLikeButtonTap(bool isLiked, TuChongItem item) {
-    ///send your request here
-    ///
-    final Completer<bool> completer = new Completer<bool>();
-    Timer(const Duration(milliseconds: 200), () {
-      item.isFavorite = !item.isFavorite;
-      item.favorites =
-          item.isFavorite ? item.favorites + 1 : item.favorites - 1;
+  Future<bool> onLikeButtonTapped(bool isLiked) async{
+    /// send your request here
+    // final bool success= await sendRequest();
 
-      // if your request is failed,return null,
-      completer.complete(item.isFavorite);
-    });
-    return completer.future;
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+
+    return !isLiked;
   }
 ```
-[more detail](https://github.com/fluttercandies/like_button/blob/master/example/lib/photo_view_demo.dart)
-
 
 ## parameters
 | parameter                  | description                                                                           | default                                                                                                                                                                               |

@@ -1,14 +1,7 @@
-import 'dart:io';
-
 import 'package:example/pages/no_route.dart';
-import 'package:extended_image/extended_image.dart';
-import 'package:extended_image_library/extended_image_library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker_saver/image_picker_saver.dart';
-import 'package:oktoast/oktoast.dart';
 
 import 'example_route.dart';
 import 'example_route_helper.dart';
@@ -16,31 +9,14 @@ import 'example_route_helper.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp() {
-    clearDiskCachedImages(duration: Duration(days: 7));
-  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-        child: MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      navigatorObservers: [
-        FFNavigatorObserver(routeChange: (name) {
-          //you can track page here
-          // print(name);
-        }, showStatusBarChange: (bool showStatusBar) {
-          if (showStatusBar) {
-            SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-          } else {
-            SystemChrome.setEnabledSystemUIOverlays([]);
-          }
-        })
-      ],
       builder: (c, w) {
         ScreenUtil.instance =
             ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
@@ -74,29 +50,17 @@ class MyApp extends StatelessWidget {
           case PageRouteType.cupertino:
             return CupertinoPageRoute(settings: settings, builder: (c) => page);
           case PageRouteType.transparent:
-            return Platform.isIOS
-                ? TransparentCupertinoPageRoute(
-                    settings: settings, builder: (c) => page)
-                : TransparentMaterialPageRoute(
-                    settings: settings, builder: (c) => page);
-//            return FFTransparentPageRoute(
-//                settings: settings,
-//                pageBuilder: (BuildContext context, Animation<double> animation,
-//                        Animation<double> secondaryAnimation) =>
-//                    page);
+            return FFTransparentPageRoute(
+                settings: settings,
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                        Animation<double> secondaryAnimation) =>
+                    page);
           default:
-            return Platform.isIOS
+            return Theme.of(context).platform == TargetPlatform.iOS
                 ? CupertinoPageRoute(settings: settings, builder: (c) => page)
                 : MaterialPageRoute(settings: settings, builder: (c) => page);
         }
       },
-    ));
+    );
   }
-}
-
-///save netwrok image to photo
-Future<bool> saveNetworkImageToPhoto(String url, {bool useCache: true}) async {
-  var data = await getNetworkImageData(url, useCache: useCache);
-  var filePath = await ImagePickerSaver.saveFile(fileData: data);
-  return filePath != null && filePath != "";
 }
