@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 import 'package:like_button/src/utils/like_button_util.dart';
 
@@ -8,6 +9,19 @@ import 'package:like_button/src/utils/like_button_util.dart';
 ///
 
 class BubblesPainter extends CustomPainter {
+  BubblesPainter({
+    @required this.currentProgress,
+    this.bubblesCount = 7,
+    this.color1 = const Color(0xFFFFC107),
+    this.color2 = const Color(0xFFFF9800),
+    this.color3 = const Color(0xFFFF5722),
+    this.color4 = const Color(0xFFF44336),
+  }) {
+    outerBubblesPositionAngle = 360.0 / bubblesCount;
+    for (int i = 0; i < circlePaints.length; i++) {
+      circlePaints[i] = Paint()..style = PaintingStyle.fill;
+    }
+  }
   final int bubblesCount;
   double outerBubblesPositionAngle = 51.42;
 
@@ -19,13 +33,13 @@ class BubblesPainter extends CustomPainter {
   double centerX = 0.0;
   double centerY = 0.0;
 
-  final List<Paint> circlePaints = List(4);
+  final List<Paint> circlePaints = <Paint>[];
 
   double maxOuterDotsRadius = 0.0;
   double maxInnerDotsRadius = 0.0;
   double maxDotSize;
 
-  final currentProgress;
+  final double currentProgress;
 
   double currentRadius1 = 0.0;
   double currentDotSize1 = 0.0;
@@ -33,20 +47,6 @@ class BubblesPainter extends CustomPainter {
   double currentRadius2 = 0.0;
 
   bool isFirst = true;
-
-  BubblesPainter({
-    @required this.currentProgress,
-    this.bubblesCount = 7,
-    this.color1 = const Color(0xFFFFC107),
-    this.color2 = const Color(0xFFFF9800),
-    this.color3 = const Color(0xFFFF5722),
-    this.color4 = const Color(0xFFF44336),
-  }) {
-    outerBubblesPositionAngle = 360.0 / bubblesCount;
-    for (int i = 0; i < circlePaints.length; i++) {
-      circlePaints[i] = new Paint()..style = PaintingStyle.fill;
-    }
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -66,29 +66,29 @@ class BubblesPainter extends CustomPainter {
   }
 
   void _drawOuterBubblesFrame(Canvas canvas) {
-    var start = outerBubblesPositionAngle / 4.0 * 3.0;
+    final double start = outerBubblesPositionAngle / 4.0 * 3.0;
     for (int i = 0; i < bubblesCount; i++) {
-      double cX = centerX +
+      final double cX = centerX +
           currentRadius1 *
-              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
-      double cY = centerY +
+              math.cos(degToRad(start + outerBubblesPositionAngle * i));
+      final double cY = centerY +
           currentRadius1 *
-              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
+              math.sin(degToRad(start + outerBubblesPositionAngle * i));
       canvas.drawCircle(Offset(cX, cY), currentDotSize1,
-          circlePaints[(i) % circlePaints.length]);
+          circlePaints[i % circlePaints.length]);
     }
   }
 
   void _drawInnerBubblesFrame(Canvas canvas) {
-    var start =
+    final double start =
         outerBubblesPositionAngle / 4.0 * 3.0 - outerBubblesPositionAngle / 2.0;
     for (int i = 0; i < bubblesCount; i++) {
-      double cX = centerX +
+      final double cX = centerX +
           currentRadius2 *
-              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
-      double cY = centerY +
+              math.cos(degToRad(start + outerBubblesPositionAngle * i));
+      final double cY = centerY +
           currentRadius2 *
-              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
+              math.sin(degToRad(start + outerBubblesPositionAngle * i));
       canvas.drawCircle(Offset(cX, cY), currentDotSize2,
           circlePaints[(i + 1) % circlePaints.length]);
     }
@@ -133,31 +133,31 @@ class BubblesPainter extends CustomPainter {
   }
 
   void _updateBubblesPaints() {
-    double progress = clamp(currentProgress, 0.6, 1.0);
-    int alpha =
+    final double progress = clamp(currentProgress, 0.6, 1.0);
+    final int alpha =
         mapValueFromRangeToRange(progress, 0.6, 1.0, 255.0, 0.0).toInt();
     if (currentProgress < 0.5) {
-      double progress =
+      final double progress =
           mapValueFromRangeToRange(currentProgress, 0.0, 0.5, 0.0, 1.0);
-      circlePaints[0]
-        ..color = Color.lerp(color1, color2, progress).withAlpha(alpha);
-      circlePaints[1]
-        ..color = Color.lerp(color2, color3, progress).withAlpha(alpha);
-      circlePaints[2]
-        ..color = Color.lerp(color3, color4, progress).withAlpha(alpha);
-      circlePaints[3]
-        ..color = Color.lerp(color4, color1, progress).withAlpha(alpha);
+      circlePaints[0].color =
+          Color.lerp(color1, color2, progress).withAlpha(alpha);
+      circlePaints[1].color =
+          Color.lerp(color2, color3, progress).withAlpha(alpha);
+      circlePaints[2].color =
+          Color.lerp(color3, color4, progress).withAlpha(alpha);
+      circlePaints[3].color =
+          Color.lerp(color4, color1, progress).withAlpha(alpha);
     } else {
-      double progress =
+      final double progress =
           mapValueFromRangeToRange(currentProgress, 0.5, 1.0, 0.0, 1.0);
-      circlePaints[0]
-        ..color = Color.lerp(color2, color3, progress).withAlpha(alpha);
-      circlePaints[1]
-        ..color = Color.lerp(color3, color4, progress).withAlpha(alpha);
-      circlePaints[2]
-        ..color = Color.lerp(color4, color1, progress).withAlpha(alpha);
-      circlePaints[3]
-        ..color = Color.lerp(color1, color2, progress).withAlpha(alpha);
+      circlePaints[0].color =
+          Color.lerp(color2, color3, progress).withAlpha(alpha);
+      circlePaints[1].color =
+          Color.lerp(color3, color4, progress).withAlpha(alpha);
+      circlePaints[2].color =
+          Color.lerp(color4, color1, progress).withAlpha(alpha);
+      circlePaints[3].color =
+          Color.lerp(color1, color2, progress).withAlpha(alpha);
     }
   }
 
