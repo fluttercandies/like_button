@@ -9,9 +9,9 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 const double buttonSize = 40.0;
 
 @FFRoute(
-    name: "fluttercandies://LikeButtonDemo",
-    routeName: "like button",
-    description: "show how to build like button")
+    name: 'fluttercandies://LikeButtonDemo',
+    routeName: 'like button',
+    description: 'show how to build like button')
 class LikeButtonDemo extends StatefulWidget {
   @override
   _LikeButtonDemoState createState() => _LikeButtonDemoState();
@@ -19,17 +19,26 @@ class LikeButtonDemo extends StatefulWidget {
 
 class _LikeButtonDemoState extends State<LikeButtonDemo> {
   final int likeCount = 999;
+  final GlobalKey<LikeButtonState> _globalKey = GlobalKey<LikeButtonState>();
   @override
   Widget build(BuildContext context) {
     return Material(
         child: Column(children: <Widget>[
       AppBar(
-        title: Text("Like Button Demo"),
+        title: const Text('Like Button Demo'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              _globalKey.currentState.onTap();
+            },
+          )
+        ],
       ),
       Expanded(
         child: LayoutBuilder(
-          builder: (c, data) {
-            final crossAxisCount = data.maxWidth ~/ 160.0 + 1;
+          builder: (BuildContext c, BoxConstraints data) {
+            final int crossAxisCount = data.maxWidth ~/ 160.0 + 1;
             return GridView(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount),
@@ -37,18 +46,20 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 LikeButton(
                   size: buttonSize,
                   likeCount: likeCount,
+                  key: _globalKey,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = isLiked ? Colors.pinkAccent : Colors.grey;
+                    final ColorSwatch<int> color =
+                        isLiked ? Colors.pinkAccent : Colors.grey;
                     Widget result;
                     if (count == 0) {
                       result = Text(
-                        "love",
+                        'love',
                         style: TextStyle(color: color),
                       );
                     } else
                       result = Text(
                         count >= 1000
-                            ? (count / 1000.0).toStringAsFixed(1) + "k"
+                            ? (count / 1000.0).toStringAsFixed(1) + 'k'
                             : text,
                         style: TextStyle(color: color),
                       );
@@ -57,14 +68,14 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   likeCountAnimationType: likeCount < 1000
                       ? LikeCountAnimationType.part
                       : LikeCountAnimationType.none,
-                  likeCountPadding: EdgeInsets.only(left: 15.0),
+                  likeCountPadding: const EdgeInsets.only(left: 15.0),
                   onTap: onLikeButtonTapped,
                 ),
                 LikeButton(
                   size: buttonSize,
-                  circleColor: CircleColor(
+                  circleColor: const CircleColor(
                       start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                  bubblesColor: BubblesColor(
+                  bubblesColor: const BubblesColor(
                     dotPrimaryColor: Color(0xff33b5e5),
                     dotSecondaryColor: Color(0xff0099cc),
                   ),
@@ -77,11 +88,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   },
                   likeCount: 665,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+                    final ColorSwatch<int> color =
+                        isLiked ? Colors.deepPurpleAccent : Colors.grey;
                     Widget result;
                     if (count == 0) {
                       result = Text(
-                        "love",
+                        'love',
                         style: TextStyle(color: color),
                       );
                     } else
@@ -91,13 +103,13 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                       );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(left: 15.0),
+                  likeCountPadding: const EdgeInsets.only(left: 15.0),
                 ),
                 LikeButton(
                   size: buttonSize,
-                  circleColor: CircleColor(
+                  circleColor: const CircleColor(
                       start: Color(0xff669900), end: Color(0xff669900)),
-                  bubblesColor: BubblesColor(
+                  bubblesColor: const BubblesColor(
                     dotPrimaryColor: Color(0xff669900),
                     dotSecondaryColor: Color(0xff99cc00),
                   ),
@@ -111,11 +123,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   likeCount: 665,
                   likeCountAnimationType: LikeCountAnimationType.all,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = isLiked ? Colors.green : Colors.grey;
+                    final MaterialColor color =
+                        isLiked ? Colors.green : Colors.grey;
                     Widget result;
                     if (count == 0) {
                       result = Text(
-                        "love",
+                        'love',
                         style: TextStyle(color: color),
                       );
                     } else
@@ -125,7 +138,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                       );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(left: 15.0),
+                  likeCountPadding: const EdgeInsets.only(left: 15.0),
                 ),
                 LikeButton(
                   size: buttonSize,
@@ -147,11 +160,11 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   },
                   likeCount: 888,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = Colors.red;
+                    final MaterialColor color = Colors.red;
                     Widget result;
                     if (count == 0) {
                       result = Text(
-                        "love",
+                        'love',
                         style: TextStyle(color: color),
                       );
                     } else
@@ -161,7 +174,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                       );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(left: 15.0),
+                  likeCountPadding: const EdgeInsets.only(left: 15.0),
                 ),
                 LikeButton(
                   size: buttonSize,
@@ -201,11 +214,11 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   likeCount: 888,
                   countPostion: CountPostion.left,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = Colors.grey;
+                    final MaterialColor color = Colors.grey;
                     Widget result;
                     if (count == 0) {
                       result = Text(
-                        "love",
+                        'love',
                         style: TextStyle(color: color),
                       );
                     } else
@@ -215,7 +228,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                       );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(right: 15.0),
+                  likeCountPadding: const EdgeInsets.only(right: 15.0),
                 ),
                 LikeButton(
                   size: buttonSize,
@@ -238,7 +251,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   likeCount: 888,
                   countPostion: CountPostion.bottom,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = Colors.grey;
+                    final MaterialColor color = Colors.grey;
                     Widget result;
 
                     result = Text(
@@ -247,18 +260,18 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                     );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(top: 15.0),
-                  countDecoration: (Widget count) {
+                  likeCountPadding: const EdgeInsets.only(top: 15.0),
+                  countDecoration: (Widget count, int likeCount) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         count,
-                        SizedBox(
+                        const SizedBox(
                           width: 10.0,
                         ),
                         Text(
-                          "loves",
+                          'loves',
                           style: TextStyle(color: Colors.indigoAccent),
                         )
                       ],
@@ -286,7 +299,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                   likeCount: 888,
                   countPostion: CountPostion.top,
                   countBuilder: (int count, bool isLiked, String text) {
-                    var color = Colors.grey;
+                    final MaterialColor color = Colors.grey;
                     Widget result;
                     result = Text(
                       text,
@@ -294,18 +307,18 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                     );
                     return result;
                   },
-                  likeCountPadding: EdgeInsets.only(bottom: 15.0),
-                  countDecoration: (Widget count) {
+                  likeCountPadding: const EdgeInsets.only(bottom: 15.0),
+                  countDecoration: (Widget count, int likeCount) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         count,
-                        SizedBox(
+                        const SizedBox(
                           width: 10.0,
                         ),
                         Text(
-                          "loves",
+                          'loves',
                           style: TextStyle(color: Colors.orange),
                         )
                       ],
@@ -320,7 +333,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
     ]));
   }
 
-  Future<bool> onLikeButtonTapped(bool isLiked) async{
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
     /// send your request here
     // final bool success= await sendRequest();
 
