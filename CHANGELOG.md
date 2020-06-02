@@ -1,3 +1,9 @@
+## [1.0.0] 
+
+* Fix analysis_options
+* Breaking change: add likeCount for CountDecoration call back
+* Public LikeButtonState and onTap
+  
 ## [0.2.0] 
 
 * Support Flutter Web
