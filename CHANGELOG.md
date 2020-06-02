@@ -1,3 +1,7 @@
+## [1.0.1] 
+
+* Fix the error of bubbles_painter.dart.
+  
 ## [1.0.0] 
 
 * Fix analysis_options

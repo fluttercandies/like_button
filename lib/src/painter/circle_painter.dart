@@ -13,10 +13,10 @@ class CirclePainter extends CustomPainter {
       this.circleColor = const CircleColor(
           start: Color(0xFFFF5722), end: Color(0xFFFFC107))}) {
     //circlePaint..style = PaintingStyle.fill;
-    circlePaint.style = PaintingStyle.stroke;
+    _circlePaint.style = PaintingStyle.stroke;
     //maskPaint..blendMode = BlendMode.clear;
   }
-  Paint circlePaint = Paint();
+  final Paint _circlePaint = Paint();
   //Paint maskPaint = new Paint();
 
   final double outerCircleRadiusProgress;
@@ -37,16 +37,16 @@ class CirclePainter extends CustomPainter {
     final double strokeWidth = outerCircleRadiusProgress * center -
         (innerCircleRadiusProgress * center);
     if (strokeWidth > 0.0) {
-      circlePaint.strokeWidth = strokeWidth;
+      _circlePaint.strokeWidth = strokeWidth;
       canvas.drawCircle(Offset(center, center),
-          outerCircleRadiusProgress * center, circlePaint);
+          outerCircleRadiusProgress * center, _circlePaint);
     }
   }
 
   void _updateCircleColor() {
     double colorProgress = clamp(outerCircleRadiusProgress, 0.5, 1.0);
     colorProgress = mapValueFromRangeToRange(colorProgress, 0.5, 1.0, 0.0, 1.0);
-    circlePaint.color =
+    _circlePaint.color =
         Color.lerp(circleColor.start, circleColor.end, colorProgress);
   }
 
