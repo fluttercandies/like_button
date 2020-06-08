@@ -36,7 +36,8 @@ class LikeButton extends StatefulWidget {
       this.onTap,
       this.countPostion = CountPostion.right,
       this.padding,
-      this.countDecoration})
+      this.countDecoration,
+      this.controller})
       : assert(size != null),
         assert(animationDuration != null),
         assert(circleColor != null),
@@ -109,6 +110,10 @@ class LikeButton extends StatefulWidget {
 
   ///return count widget with decoration
   final CountDecoration countDecoration;
+
+  /// If non-null, this can be used to control the state of the panel.
+  final LikeButtonController controller;
+
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -139,6 +144,8 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     _likeCountController = AnimationController(
         duration: widget.likeCountAnimationDuration, vsync: this);
 
+    widget.controller?._addState(this);
+
     _initAnimations();
   }
 
@@ -152,6 +159,8 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         AnimationController(duration: widget.animationDuration, vsync: this);
     _likeCountController = AnimationController(
         duration: widget.likeCountAnimationDuration, vsync: this);
+
+    widget.controller?._addState(this);
 
     _initAnimations();
 
@@ -520,5 +529,24 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+}
+
+class LikeButtonController{
+  LikeButtonState _likeButtonState;
+
+  void _addState(LikeButtonState likeButtonState){
+    this._likeButtonState = likeButtonState;
+  }
+
+  /// Determine if the LikeButtonController is attached to an instance
+  /// of the LikeButton (this property must return true before any other
+  /// functions can be used)
+  bool get isAttached => _likeButtonState != null;
+
+  /// Taps the like button programmatically
+  void tap(){
+    assert(isAttached, "LikeButtonController must be attached to a LikeButton");
+    return _likeButtonState.onTap();
   }
 }
