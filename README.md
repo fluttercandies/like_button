@@ -102,3 +102,7 @@ and you can also define custom effects.
 | countDecoration            | decoration of like count widget                                                       | null                                                                                                                                                                                  |
 
 [more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)
+
+## ☕️Buy me a coffee
+
+![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)
