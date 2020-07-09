@@ -104,3 +104,7 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 | countDecoration            | count 的修饰器，你可以通过它为count增加其他文字或者效果                                               | null                                                                                                                                                                                  |  |
 
 [more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)
+
+## ☕️Buy me a coffee
+
+![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)
