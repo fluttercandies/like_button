@@ -13,7 +13,7 @@ Reference codes from [jd-alexander](https://github.com/jd-alexander/LikeButton) 
 
 ![](https://github.com/fluttercandies/Flutter_Candies/blob/master/gif/like_button/like_button.gif)
 
-- [like_button](#likebutton)
+- [like_button](#like_button)
   - [How to use it.](#how-to-use-it)
   - [The time to send your request](#the-time-to-send-your-request)
   - [parameters](#parameters)
@@ -101,8 +101,3 @@ and you can also define custom effects.
 | countPostion               | top,right,bottom,left of like button widget                                           | CountPostion.right                                                                                                                                                                    |
 | countDecoration            | decoration of like count widget                                                       | null                                                                                                                                                                                  |
 
-[more detail](https://github.com/fluttercandies/like_button/tree/master/example/lib)
-
-## ☕️Buy me a coffee
-
-![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)
