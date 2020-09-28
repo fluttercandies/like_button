@@ -32,4 +32,4 @@ enum LikeCountAnimationType {
 enum CountPostion { left, right, top, bottom }
 
 ///return count widget with decoration
-typedef CountDecoration = Widget Function(Widget count,int likeCount);
+typedef CountDecoration = Widget Function(Widget count, int likeCount);

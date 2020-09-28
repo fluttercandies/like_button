@@ -383,7 +383,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   Widget _createLikeCountWidget(int likeCount, bool isLiked, String text) {
     return widget.countBuilder?.call(likeCount, isLiked, text) ??
-        Text(text, style: TextStyle(color: Colors.grey));
+        Text(text, style: const TextStyle(color: Colors.grey));
   }
 
   void onTap() {
@@ -473,7 +473,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(
+        curve: const Interval(
           0.0,
           0.3,
           curve: Curves.ease,
@@ -486,7 +486,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(
+        curve: const Interval(
           0.2,
           0.5,
           curve: Curves.ease,
@@ -513,7 +513,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(
+        curve: const Interval(
           0.1,
           1.0,
           curve: Curves.decelerate,

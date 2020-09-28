@@ -1,17 +1,19 @@
+import 'package:example/example_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 import '../example_route.dart';
 import '../example_routes.dart' as example_routes;
+
 @FFRoute(
   name: 'fluttercandies://mainpage',
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
- MainPage() {
+  MainPage() {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
-    routeNames.remove('fluttercandies://mainpage');
+    routeNames.remove(Routes.fluttercandiesMainpage);
     routes.addAll(routeNames
         .map<RouteResult>((String name) => getRouteResult(name: name)));
   }
@@ -40,7 +42,7 @@ class MainPage extends StatelessWidget {
                     ),
                     Text(
                       page.description,
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     )
                   ],
                 ),
