@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Fix readme error
+
 ## 1.0.2
 
 * Add stale.yml
