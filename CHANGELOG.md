@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Fix animation stop when setstate
+
 ## 1.0.3
 
 * Fix readme error
