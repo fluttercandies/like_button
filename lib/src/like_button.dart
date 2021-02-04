@@ -398,7 +398,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       return;
     }
     if (widget.onTap != null) {
-      widget.onTap(_isLiked ?? true).then((bool isLiked) {
+      widget.onTap(!(_isLiked ?? true)).then((bool isLiked) {
         _handleIsLikeChanged(isLiked);
       });
     } else {
