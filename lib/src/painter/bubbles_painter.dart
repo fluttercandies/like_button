@@ -10,7 +10,7 @@ import 'package:like_button/src/utils/like_button_util.dart';
 
 class BubblesPainter extends CustomPainter {
   BubblesPainter({
-    @required this.currentProgress,
+    required this.currentProgress,
     this.bubblesCount = 7,
     this.color1 = const Color(0xFFFFC107),
     this.color2 = const Color(0xFFFF9800),
@@ -36,11 +36,11 @@ class BubblesPainter extends CustomPainter {
 
   double _maxOuterDotsRadius = 0.0;
   double _maxInnerDotsRadius = 0.0;
-  double _maxDotSize;
+  double? _maxDotSize;
 
   double _currentRadius1 = 0.0;
-  double _currentDotSize1 = 0.0;
-  double _currentDotSize2 = 0.0;
+  double? _currentDotSize1 = 0.0;
+  double? _currentDotSize2 = 0.0;
   double _currentRadius2 = 0.0;
 
   @override
@@ -48,7 +48,7 @@ class BubblesPainter extends CustomPainter {
     _centerX = size.width * 0.5;
     _centerY = size.height * 0.5;
     _maxDotSize = size.width * 0.05;
-    _maxOuterDotsRadius = size.width * 0.5 - _maxDotSize * 2;
+    _maxOuterDotsRadius = size.width * 0.5 - _maxDotSize! * 2;
     _maxInnerDotsRadius = 0.8 * _maxOuterDotsRadius;
 
     _updateOuterBubblesPosition();
@@ -67,7 +67,7 @@ class BubblesPainter extends CustomPainter {
       final double cY = _centerY +
           _currentRadius1 *
               math.sin(degToRad(start + _outerBubblesPositionAngle * i));
-      canvas.drawCircle(Offset(cX, cY), _currentDotSize1,
+      canvas.drawCircle(Offset(cX, cY), _currentDotSize1!,
           _circlePaints[i % _circlePaints.length]);
     }
   }
@@ -82,7 +82,7 @@ class BubblesPainter extends CustomPainter {
       final double cY = _centerY +
           _currentRadius2 *
               math.sin(degToRad(start + _outerBubblesPositionAngle * i));
-      canvas.drawCircle(Offset(cX, cY), _currentDotSize2,
+      canvas.drawCircle(Offset(cX, cY), _currentDotSize2!,
           _circlePaints[(i + 1) % _circlePaints.length]);
     }
   }
@@ -101,7 +101,7 @@ class BubblesPainter extends CustomPainter {
       _currentDotSize1 = _maxDotSize;
     } else {
       _currentDotSize1 =
-          mapValueFromRangeToRange(currentProgress, 0.7, 1.0, _maxDotSize, 0.0);
+          mapValueFromRangeToRange(currentProgress, 0.7, 1.0, _maxDotSize!, 0.0);
     }
   }
 
@@ -118,10 +118,10 @@ class BubblesPainter extends CustomPainter {
       _currentDotSize2 = _maxDotSize;
     } else if (currentProgress < 0.5) {
       _currentDotSize2 = mapValueFromRangeToRange(
-          currentProgress, 0.2, 0.5, _maxDotSize, 0.3 * _maxDotSize);
+          currentProgress, 0.2, 0.5, _maxDotSize!, 0.3 * _maxDotSize!);
     } else {
       _currentDotSize2 = mapValueFromRangeToRange(
-          currentProgress, 0.5, 1.0, _maxDotSize * 0.3, 0.0);
+          currentProgress, 0.5, 1.0, _maxDotSize! * 0.3, 0.0);
     }
   }
 
@@ -133,24 +133,24 @@ class BubblesPainter extends CustomPainter {
       final double progress =
           mapValueFromRangeToRange(currentProgress, 0.0, 0.5, 0.0, 1.0);
       _circlePaints[0].color =
-          Color.lerp(color1, color2, progress).withAlpha(alpha);
+          Color.lerp(color1, color2, progress)!.withAlpha(alpha);
       _circlePaints[1].color =
-          Color.lerp(color2, color3, progress).withAlpha(alpha);
+          Color.lerp(color2, color3, progress)!.withAlpha(alpha);
       _circlePaints[2].color =
-          Color.lerp(color3, color4, progress).withAlpha(alpha);
+          Color.lerp(color3, color4, progress)!.withAlpha(alpha);
       _circlePaints[3].color =
-          Color.lerp(color4, color1, progress).withAlpha(alpha);
+          Color.lerp(color4, color1, progress)!.withAlpha(alpha);
     } else {
       final double progress =
           mapValueFromRangeToRange(currentProgress, 0.5, 1.0, 0.0, 1.0);
       _circlePaints[0].color =
-          Color.lerp(color2, color3, progress).withAlpha(alpha);
+          Color.lerp(color2, color3, progress)!.withAlpha(alpha);
       _circlePaints[1].color =
-          Color.lerp(color3, color4, progress).withAlpha(alpha);
+          Color.lerp(color3, color4, progress)!.withAlpha(alpha);
       _circlePaints[2].color =
-          Color.lerp(color4, color1, progress).withAlpha(alpha);
+          Color.lerp(color4, color1, progress)!.withAlpha(alpha);
       _circlePaints[3].color =
-          Color.lerp(color1, color2, progress).withAlpha(alpha);
+          Color.lerp(color1, color2, progress)!.withAlpha(alpha);
     }
   }
 

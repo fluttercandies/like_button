@@ -8,8 +8,8 @@ import 'package:like_button/src/utils/like_button_util.dart';
 
 class CirclePainter extends CustomPainter {
   CirclePainter(
-      {@required this.outerCircleRadiusProgress,
-      @required this.innerCircleRadiusProgress,
+      {required this.outerCircleRadiusProgress,
+      required this.innerCircleRadiusProgress,
       this.circleColor = const CircleColor(
           start: Color(0xFFFF5722), end: Color(0xFFFFC107))}) {
     //circlePaint..style = PaintingStyle.fill;
@@ -47,7 +47,7 @@ class CirclePainter extends CustomPainter {
     double colorProgress = clamp(outerCircleRadiusProgress, 0.5, 1.0);
     colorProgress = mapValueFromRangeToRange(colorProgress, 0.5, 1.0, 0.0, 1.0);
     _circlePaint.color =
-        Color.lerp(circleColor.start, circleColor.end, colorProgress);
+        Color.lerp(circleColor.start, circleColor.end, colorProgress)!;
   }
 
   @override

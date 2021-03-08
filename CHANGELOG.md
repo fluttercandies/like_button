@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Support null-safety
+  
 ## 1.0.4
 
 * Fix animation stop when setstate

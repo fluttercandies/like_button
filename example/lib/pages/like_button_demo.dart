@@ -1,6 +1,6 @@
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 ///
 ///  create by zhoumaotuo on 2019/5/27
@@ -9,9 +9,10 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 const double buttonSize = 40.0;
 
 @FFRoute(
-    name: 'fluttercandies://LikeButtonDemo',
-    routeName: 'like button',
-    description: 'show how to build like button')
+  name: 'fluttercandies://LikeButtonDemo',
+  routeName: 'like button',
+  description: 'show how to build like button',
+)
 class LikeButtonDemo extends StatefulWidget {
   @override
   _LikeButtonDemoState createState() => _LikeButtonDemoState();
@@ -34,7 +35,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             likeCount: likeCount,
             key: _globalKey,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               final ColorSwatch<int> color =
                   isLiked ? Colors.pinkAccent : Colors.grey;
               Widget result;
@@ -45,7 +46,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 );
               } else
                 result = Text(
-                  count >= 1000
+                  count! >= 1000
                       ? (count / 1000.0).toStringAsFixed(1) + 'k'
                       : text,
                   style: TextStyle(color: color),
@@ -74,7 +75,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
               );
             },
             likeCount: 665,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               final ColorSwatch<int> color =
                   isLiked ? Colors.deepPurpleAccent : Colors.grey;
               Widget result;
@@ -109,7 +110,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             },
             likeCount: 665,
             likeCountAnimationType: LikeCountAnimationType.all,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               final MaterialColor color = isLiked ? Colors.green : Colors.grey;
               Widget result;
               if (count == 0) {
@@ -130,12 +131,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             isLiked: null,
             circleColor: CircleColor(
-              start: Colors.redAccent[100],
-              end: Colors.redAccent[400],
+              start: Colors.redAccent[100]!,
+              end: Colors.redAccent[400]!,
             ),
             bubblesColor: BubblesColor(
-              dotPrimaryColor: Colors.red[300],
-              dotSecondaryColor: Colors.red[200],
+              dotPrimaryColor: Colors.red[300]!,
+              dotSecondaryColor: Colors.red[200]!,
             ),
             likeBuilder: (bool isLiked) {
               return const Icon(
@@ -145,7 +146,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
               );
             },
             likeCount: 888,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               return Text(
                 count == 0 ? 'love' : text,
                 style: const TextStyle(color: Colors.red),
@@ -156,10 +157,10 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
           LikeButton(
             size: buttonSize,
             circleColor: CircleColor(
-                start: Colors.pinkAccent[200], end: Colors.pinkAccent[400]),
+                start: Colors.pinkAccent[200]!, end: Colors.pinkAccent[400]!),
             bubblesColor: BubblesColor(
-              dotPrimaryColor: Colors.lightBlue[300],
-              dotSecondaryColor: Colors.lightBlue[200],
+              dotPrimaryColor: Colors.lightBlue[300]!,
+              dotSecondaryColor: Colors.lightBlue[200]!,
             ),
             likeBuilder: (bool isLiked) {
               return Icon(
@@ -173,12 +174,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             isLiked: null,
             circleColor: CircleColor(
-              start: Colors.grey[200],
-              end: Colors.grey[400],
+              start: Colors.grey[200]!,
+              end: Colors.grey[400]!,
             ),
             bubblesColor: BubblesColor(
-              dotPrimaryColor: Colors.grey[600],
-              dotSecondaryColor: Colors.grey[200],
+              dotPrimaryColor: Colors.grey[600]!,
+              dotSecondaryColor: Colors.grey[200]!,
             ),
             likeBuilder: (bool isLiked) {
               return Icon(
@@ -189,7 +190,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             },
             likeCount: 888,
             countPostion: CountPostion.left,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               return Text(
                 count == 0 ? 'love' : text,
                 style: const TextStyle(color: Colors.grey),
@@ -201,12 +202,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             isLiked: null,
             circleColor: CircleColor(
-              start: Colors.indigoAccent[200],
-              end: Colors.indigoAccent[400],
+              start: Colors.indigoAccent[200]!,
+              end: Colors.indigoAccent[400]!,
             ),
             bubblesColor: BubblesColor(
-              dotPrimaryColor: Colors.indigoAccent[700],
-              dotSecondaryColor: Colors.indigoAccent[200],
+              dotPrimaryColor: Colors.indigoAccent[700]!,
+              dotSecondaryColor: Colors.indigoAccent[200]!,
             ),
             likeBuilder: (bool isLiked) {
               return Icon(
@@ -217,14 +218,14 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             },
             likeCount: 888,
             countPostion: CountPostion.bottom,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               return Text(
                 text,
                 style: const TextStyle(color: Colors.grey),
               );
             },
             likeCountPadding: const EdgeInsets.only(top: 15.0),
-            countDecoration: (Widget count, int likeCount) {
+            countDecoration: (Widget count, int? likeCount) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -245,12 +246,12 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             isLiked: null,
             circleColor: CircleColor(
-              start: Colors.orange[200],
-              end: Colors.orange[400],
+              start: Colors.orange[200]!,
+              end: Colors.orange[400]!,
             ),
             bubblesColor: BubblesColor(
-              dotPrimaryColor: Colors.orange[600],
-              dotSecondaryColor: Colors.orange[200],
+              dotPrimaryColor: Colors.orange[600]!,
+              dotSecondaryColor: Colors.orange[200]!,
             ),
             likeBuilder: (bool isLiked) {
               return Icon(
@@ -261,14 +262,14 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             },
             likeCount: 888,
             countPostion: CountPostion.top,
-            countBuilder: (int count, bool isLiked, String text) {
+            countBuilder: (int? count, bool isLiked, String text) {
               return Text(
                 text,
                 style: const TextStyle(color: Colors.grey),
               );
             },
             likeCountPadding: const EdgeInsets.only(bottom: 15.0),
-            countDecoration: (Widget count, int likeCount) {
+            countDecoration: (Widget count, int? likeCount) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -290,7 +291,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.favorite),
         onPressed: () {
-          _globalKey.currentState.onTap();
+          _globalKey.currentState!.onTap();
         },
       ),
     );

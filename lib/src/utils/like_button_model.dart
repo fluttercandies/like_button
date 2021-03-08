@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 
 class BubblesColor {
   const BubblesColor({
-    @required this.dotPrimaryColor,
-    @required this.dotSecondaryColor,
+    required this.dotPrimaryColor,
+    required this.dotSecondaryColor,
     this.dotThirdColor,
     this.dotLastColor,
   });
   final Color dotPrimaryColor;
   final Color dotSecondaryColor;
-  final Color dotThirdColor;
-  final Color dotLastColor;
+  final Color? dotThirdColor;
+  final Color? dotLastColor;
   Color get dotThirdColorReal => dotThirdColor ?? dotPrimaryColor;
 
   Color get dotLastColorReal => dotLastColor ?? dotSecondaryColor;
@@ -22,8 +22,8 @@ class BubblesColor {
 
 class CircleColor {
   const CircleColor({
-    @required this.start,
-    @required this.end,
+    required this.start,
+    required this.end,
   });
   final Color start;
   final Color end;
