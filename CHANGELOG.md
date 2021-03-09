@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Format dart
+
 ## 2.0.0
 
 * Support null-safety

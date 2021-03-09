@@ -100,8 +100,8 @@ class BubblesPainter extends CustomPainter {
     } else if (currentProgress < 0.7) {
       _currentDotSize1 = _maxDotSize;
     } else {
-      _currentDotSize1 =
-          mapValueFromRangeToRange(currentProgress, 0.7, 1.0, _maxDotSize!, 0.0);
+      _currentDotSize1 = mapValueFromRangeToRange(
+          currentProgress, 0.7, 1.0, _maxDotSize!, 0.0);
     }
   }
 
