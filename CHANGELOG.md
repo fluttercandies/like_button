@@ -1,3 +1,7 @@
+## 2.0.2
+
+* Fix issue that Bubble animation is cropped #50
+  
 ## 2.0.1
 
 * Format dart

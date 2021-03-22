@@ -187,6 +187,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
               widget.likeBuilder?.call(_isLiked ?? true) ??
                   defaultWidgetBuilder(_isLiked ?? true, widget.size);
           return Stack(
+            clipBehavior: Clip.none,
             children: <Widget>[
               Positioned(
                 top: (widget.size - widget.bubblesSize) / 2.0,
@@ -329,7 +330,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
                 ),
                 Stack(
                   fit: StackFit.passthrough,
-                  clipBehavior: Clip.antiAlias,
+                  clipBehavior: Clip.hardEdge,
                   children: <Widget>[
                     FractionalTranslation(
                         translation: _preLikeCount! > _likeCount!
@@ -352,7 +353,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         builder: (BuildContext b, Widget? w) {
           return Stack(
             fit: StackFit.passthrough,
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: Clip.hardEdge,
             children: <Widget>[
               FractionalTranslation(
                   translation: _preLikeCount! > _likeCount!
