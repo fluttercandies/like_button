@@ -120,6 +120,10 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   bool? _isLiked = false;
   int? _likeCount;
   int? _preLikeCount;
+
+  bool get isLiked => _isLiked ?? false;
+  AnimationController? get controller => _controller;
+
   @override
   void initState() {
     super.initState();
@@ -443,6 +447,10 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         });
       }
     }
+  }
+
+  void runAnimation() {
+    _controller?.forward(from: 0);
   }
 
   void _initAnimations() {
