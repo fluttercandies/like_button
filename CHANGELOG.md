@@ -1,3 +1,7 @@
+## 2.0.3
+
+* Fix issue that LikeButtonTapCallback result can't be null
+
 ## 2.0.2
 
 * Fix issue that Bubble animation is cropped #50

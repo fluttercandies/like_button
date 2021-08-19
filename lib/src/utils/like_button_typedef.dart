@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// you can send your request here
 /// if failed, return null
 ///
-typedef LikeButtonTapCallback = Future<bool> Function(bool isLiked);
+typedef LikeButtonTapCallback = Future<bool?> Function(bool isLiked);
 
 ///build widget when isLike is changing
 typedef LikeWidgetBuilder = Widget? Function(bool isLiked);
