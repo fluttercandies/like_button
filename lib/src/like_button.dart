@@ -2,13 +2,6 @@
 ///  create by zmtzawqlp on 2019/5/27
 ///
 
-import 'package:flutter/material.dart';
-import 'package:like_button/src/painter/circle_painter.dart';
-import 'package:like_button/src/painter/bubbles_painter.dart';
-import 'package:like_button/src/utils/like_button_model.dart';
-import 'package:like_button/src/utils/like_button_typedef.dart';
-import 'package:like_button/src/utils/like_button_util.dart';
-
 class LikeButton extends StatefulWidget {
   const LikeButton(
       {Key? key,
@@ -310,41 +303,44 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       result = AnimatedBuilder(
           animation: _likeCountController!,
           builder: (BuildContext b, Widget? w) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Stack(
-                  fit: StackFit.passthrough,
-                  clipBehavior: Clip.hardEdge,
-                  children: <Widget>[
-                    Opacity(
-                      child: currentSameWidget,
-                      opacity: _opacityAnimation.value,
-                    ),
-                    Opacity(
-                      child: preSameWidget,
-                      opacity: 1.0 - _opacityAnimation.value,
-                    ),
-                  ],
-                ),
-                Stack(
-                  fit: StackFit.passthrough,
-                  clipBehavior: Clip.hardEdge,
-                  children: <Widget>[
-                    FractionalTranslation(
-                        translation: _preLikeCount! > _likeCount!
-                            ? _slideCurrentValueAnimation.value
-                            : -_slideCurrentValueAnimation.value,
-                        child: currentWidget),
-                    FractionalTranslation(
-                        translation: _preLikeCount! > _likeCount!
-                            ? _slidePreValueAnimation.value
-                            : -_slidePreValueAnimation.value,
-                        child: preWidget),
-                  ],
-                )
-              ],
+            return Directionality(
+              textDirection: TextDirection.ltr,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Stack(
+                    fit: StackFit.passthrough,
+                    clipBehavior: Clip.hardEdge,
+                    children: <Widget>[
+                      Opacity(
+                        child: currentSameWidget,
+                        opacity: _opacityAnimation.value,
+                      ),
+                      Opacity(
+                        child: preSameWidget,
+                        opacity: 1.0 - _opacityAnimation.value,
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    fit: StackFit.passthrough,
+                    clipBehavior: Clip.hardEdge,
+                    children: <Widget>[
+                      FractionalTranslation(
+                          translation: _preLikeCount! > _likeCount!
+                              ? _slideCurrentValueAnimation.value
+                              : -_slideCurrentValueAnimation.value,
+                          child: currentWidget),
+                      FractionalTranslation(
+                          translation: _preLikeCount! > _likeCount!
+                              ? _slidePreValueAnimation.value
+                              : -_slidePreValueAnimation.value,
+                          child: preWidget),
+                    ],
+                  )
+                ],
+              ),
             );
           });
     } else {
