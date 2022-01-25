@@ -6,10 +6,21 @@
 const List<String> routeNames = <String>[
   'fluttercandies://LikeButtonDemo',
   'fluttercandies://mainpage',
+  'fluttercandies://CodeTriggerTapFunctionDemo',
 ];
 
 class Routes {
   const Routes._();
+
+  /// 'show how to build like button'
+  ///
+  /// [name] : 'fluttercandies://CodeTriggerTapFunctionDemo'
+  ///
+  /// [routeName] : 'CodeTriggerTapFunctionDemo'
+  ///
+  /// [description] : 'show how to trigger Tap by code'
+  static const String CodeTriggerTapFunctionDemo =
+      'fluttercandies://CodeTriggerTapFunctionDemo';
 
   /// 'show how to build like button'
   ///

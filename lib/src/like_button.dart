@@ -35,7 +35,10 @@ class LikeButton extends StatefulWidget {
       this.onTap,
       this.countPostion = CountPostion.right,
       this.padding,
-      this.countDecoration})
+      this.countDecoration,
+      this.getTapFunction,
+      this.disableTapWhenAnimating = true,
+      this.rapidTriggerTap = false})
       : bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
@@ -101,6 +104,15 @@ class LikeButton extends StatefulWidget {
 
   ///return count widget with decoration
   final CountDecoration? countDecoration;
+
+  ///get onTap Function and then you can trigger it by code
+  final void Function(Function)? getTapFunction;
+
+  ///if [disableTapWhenAnimating] is true and button is animating,it will do nothing when you tap the button.
+  final bool disableTapWhenAnimating;
+
+  ///if [rapidTriggerTap] is true,tap function can be called during animating
+  final bool rapidTriggerTap;
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -132,6 +144,8 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         duration: widget.likeCountAnimationDuration, vsync: this);
 
     _initAnimations();
+
+    widget.getTapFunction?.call(onTap);
   }
 
   @override
@@ -388,10 +402,38 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         Text(text, style: const TextStyle(color: Colors.grey));
   }
 
-  void onTap() {
-    if (_controller!.isAnimating || _likeCountController!.isAnimating) {
-      return;
+  void _animatingListener(AnimationStatus status) {
+    if (status != AnimationStatus.forward &&
+        status != AnimationStatus.reverse) {
+      _controller!.removeStatusListener(_animatingListener);
+      onTap();
     }
+  }
+
+  void _countAnimatingListener(AnimationStatus status) {
+    if (status != AnimationStatus.forward &&
+        status != AnimationStatus.reverse) {
+      _likeCountController!.removeStatusListener(_countAnimatingListener);
+      onTap();
+    }
+  }
+
+  void onTap() {
+    if (!widget.rapidTriggerTap) {
+      if ((_controller!.isAnimating || _likeCountController!.isAnimating) &&
+          widget.disableTapWhenAnimating) {
+        return;
+      } else if (_controller!.isAnimating ||
+          _likeCountController!.isAnimating) {
+        if (_controller!.isAnimating) {
+          _controller!.addStatusListener(_animatingListener);
+        } else {
+          _likeCountController!.addStatusListener(_countAnimatingListener);
+        }
+        return;
+      }
+    }
+
     if (widget.onTap != null) {
       widget.onTap!(_isLiked ?? true).then((bool? isLiked) {
         _handleIsLikeChanged(isLiked);
