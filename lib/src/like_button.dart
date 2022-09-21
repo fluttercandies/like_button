@@ -12,6 +12,7 @@ class LikeButton extends StatefulWidget {
   const LikeButton(
       {Key? key,
       this.size = 30.0,
+      this.textSize = 14,
       this.likeBuilder,
       this.countBuilder,
       double? bubblesSize,
@@ -42,6 +43,9 @@ class LikeButton extends StatefulWidget {
 
   ///size of like widget
   final double size;
+
+  ///size of text
+  final double textSize;
 
   ///animation duration to change isLiked state
   final Duration animationDuration;
@@ -101,6 +105,7 @@ class LikeButton extends StatefulWidget {
 
   ///return count widget with decoration
   final CountDecoration? countDecoration;
+
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -119,6 +124,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   bool? _isLiked = false;
   int? _likeCount;
   int? _preLikeCount;
+
   @override
   void initState() {
     super.initState();
@@ -385,7 +391,10 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   Widget _createLikeCountWidget(int? likeCount, bool isLiked, String text) {
     return widget.countBuilder?.call(likeCount, isLiked, text) ??
-        Text(text, style: const TextStyle(color: Colors.grey));
+        Text(
+          text,
+          style: TextStyle(color: Colors.grey, fontSize: widget.textSize),
+        );
   }
 
   void onTap() {
