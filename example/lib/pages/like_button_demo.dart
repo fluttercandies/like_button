@@ -34,6 +34,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
           LikeButton(
             size: buttonSize,
             likeCount: likeCount,
+            isLiked: true,
             key: _globalKey,
             countBuilder: (int? count, bool isLiked, String text) {
               final ColorSwatch<int> color =
@@ -169,6 +170,7 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
                 size: buttonSize,
               );
             },
+            initAnimation: true,
           ),
           LikeButton(
             size: buttonSize,

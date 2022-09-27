@@ -35,7 +35,8 @@ class LikeButton extends StatefulWidget {
       this.onTap,
       this.countPostion = CountPostion.right,
       this.padding,
-      this.countDecoration})
+      this.countDecoration,
+      this.initAnimation})
       : bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
@@ -101,6 +102,9 @@ class LikeButton extends StatefulWidget {
 
   ///return count widget with decoration
   final CountDecoration? countDecoration;
+
+  ///start with animation
+  final bool? initAnimation;
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -132,6 +136,9 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         duration: widget.likeCountAnimationDuration, vsync: this);
 
     _initAnimations();
+    if (widget.initAnimation == true) {
+      _controller?.forward(from: 0.0);
+    }
   }
 
   @override
