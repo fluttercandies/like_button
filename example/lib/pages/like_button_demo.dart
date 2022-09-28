@@ -35,6 +35,10 @@ class _LikeButtonDemoState extends State<LikeButtonDemo> {
             size: buttonSize,
             likeCount: likeCount,
             key: _globalKey,
+            isLiked: true,
+            postFrameCallback: (LikeButtonState state) {
+              state.controller?.forward();
+            },
             countBuilder: (int? count, bool isLiked, String text) {
               final ColorSwatch<int> color =
                   isLiked ? Colors.pinkAccent : Colors.grey;

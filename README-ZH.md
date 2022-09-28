@@ -102,7 +102,7 @@ Like Button 支持推特点赞效果和喜欢数量动画的Flutter库.
 | likeCountPadding           | like count widget 跟 like widget的间隔                                                                | const EdgeInsets.only(left: 3.0)                                                                                                                                                      |
 | countPostion               | top,right,bottom,left. count的位置(上下左右)                                                          | CountPostion.right                                                                                                                                                                    |
 | countDecoration            | count 的修饰器，你可以通过它为count增加其他文字或者效果                                               | null                                                                                                                                                                                  |  |
-
+| postFrameCallback            | 第一帧回调返回 LikeButtonState                                                       | null                                                                                                                                                                                  |
 
 ## ☕️Buy me a coffee
 

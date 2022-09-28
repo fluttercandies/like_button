@@ -9,98 +9,107 @@ import 'package:like_button/src/utils/like_button_typedef.dart';
 import 'package:like_button/src/utils/like_button_util.dart';
 
 class LikeButton extends StatefulWidget {
-  const LikeButton(
-      {Key? key,
-      this.size = 30.0,
-      this.likeBuilder,
-      this.countBuilder,
-      double? bubblesSize,
-      double? circleSize,
-      this.likeCount,
-      this.isLiked = false,
-      this.mainAxisAlignment = MainAxisAlignment.center,
-      this.crossAxisAlignment = CrossAxisAlignment.center,
-      this.animationDuration = const Duration(milliseconds: 1000),
-      this.likeCountAnimationType = LikeCountAnimationType.part,
-      this.likeCountAnimationDuration = const Duration(milliseconds: 500),
-      this.likeCountPadding = const EdgeInsets.only(left: 3.0),
-      this.bubblesColor = const BubblesColor(
-        dotPrimaryColor: Color(0xFFFFC107),
-        dotSecondaryColor: Color(0xFFFF9800),
-        dotThirdColor: Color(0xFFFF5722),
-        dotLastColor: Color(0xFFF44336),
-      ),
-      this.circleColor =
-          const CircleColor(start: Color(0xFFFF5722), end: Color(0xFFFFC107)),
-      this.onTap,
-      this.countPostion = CountPostion.right,
-      this.padding,
-      this.countDecoration})
-      : bubblesSize = bubblesSize ?? size * 2.0,
+  const LikeButton({
+    Key? key,
+    this.size = 30.0,
+    this.likeBuilder,
+    this.countBuilder,
+    double? bubblesSize,
+    double? circleSize,
+    this.likeCount,
+    this.isLiked = false,
+    this.mainAxisAlignment = MainAxisAlignment.center,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.animationDuration = const Duration(milliseconds: 1000),
+    this.likeCountAnimationType = LikeCountAnimationType.part,
+    this.likeCountAnimationDuration = const Duration(milliseconds: 500),
+    this.likeCountPadding = const EdgeInsets.only(left: 3.0),
+    this.bubblesColor = const BubblesColor(
+      dotPrimaryColor: Color(0xFFFFC107),
+      dotSecondaryColor: Color(0xFFFF9800),
+      dotThirdColor: Color(0xFFFF5722),
+      dotLastColor: Color(0xFFF44336),
+    ),
+    this.circleColor =
+        const CircleColor(start: Color(0xFFFF5722), end: Color(0xFFFFC107)),
+    this.onTap,
+    this.countPostion = CountPostion.right,
+    this.padding,
+    this.countDecoration,
+    this.postFrameCallback,
+  })  : bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
 
-  ///size of like widget
+  /// size of like widget
   final double size;
 
-  ///animation duration to change isLiked state
+  /// animation duration to change isLiked state
   final Duration animationDuration;
 
-  ///total size of bubbles
+  /// total size of bubbles
   final double bubblesSize;
 
-  ///colors of bubbles
+  /// colors of bubbles
   final BubblesColor bubblesColor;
 
-  ///size of circle
+  /// size of circle
   final double circleSize;
 
-  ///colors of circle
+  /// colors of circle
   final CircleColor circleColor;
 
   /// tap call back of like button
   final LikeButtonTapCallback? onTap;
 
-  ///whether it is liked
+  /// whether it is liked
+  /// it's initial value
+  /// you can get current value from onTap/countBuilder
   final bool? isLiked;
 
-  ///like count
-  ///if null, will not show
+  /// like count
+  /// if null, will not show
+  /// it's initial value
+  /// you can get current value from countBuilder
   final int? likeCount;
 
   /// mainAxisAlignment for like button
   final MainAxisAlignment mainAxisAlignment;
 
-  // crossAxisAlignment for like button
+  /// crossAxisAlignment for like button
   final CrossAxisAlignment crossAxisAlignment;
 
-  ///builder to create like widget
+  /// builder to create like widget
   final LikeWidgetBuilder? likeBuilder;
 
-  ///builder to create like count widget
+  /// builder to create like count widget
   final LikeCountWidgetBuilder? countBuilder;
 
-  ///animation duration to change like count
+  /// animation duration to change like count
   final Duration likeCountAnimationDuration;
 
-  ///animation type to change like count(none,part,all)
+  /// animation type to change like count(none,part,all)
   final LikeCountAnimationType likeCountAnimationType;
 
-  ///padding for like count widget
+  /// padding for like count widget
   final EdgeInsetsGeometry? likeCountPadding;
 
-  ///like count widget postion
-  ///left of like widget
-  ///right of like widget
-  ///top of like widget
-  ///bottom of like widget
+  /// like count widget postion
+  /// left of like widget
+  /// right of like widget
+  /// top of like widget
+  /// bottom of like widget
   final CountPostion countPostion;
 
   /// padding of like button
   final EdgeInsetsGeometry? padding;
 
-  ///return count widget with decoration
+  /// return count widget with decoration
   final CountDecoration? countDecoration;
+
+  /// call back of first frame with LikeButtonState
+  final Function(LikeButtonState state)? postFrameCallback;
+
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -116,13 +125,22 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   AnimationController? _likeCountController;
   late Animation<double> _opacityAnimation;
 
+  AnimationController? get controller => _controller;
+  AnimationController? get likeCountController => _likeCountController;
+
   bool? _isLiked = false;
   int? _likeCount;
   int? _preLikeCount;
+
+  bool? get isLiked => _isLiked;
+  int? get likeCount => _likeCount;
+  int? get preLikeCount => _preLikeCount;
   @override
   void initState() {
     super.initState();
+
     _isLiked = widget.isLiked;
+
     _likeCount = widget.likeCount;
     _preLikeCount = _likeCount;
 
@@ -132,6 +150,14 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         duration: widget.likeCountAnimationDuration, vsync: this);
 
     _initAnimations();
+
+    if (widget.postFrameCallback != null) {
+      // ignore: unnecessary_cast
+      (WidgetsBinding.instance as WidgetsBinding)
+          .addPostFrameCallback((Duration timeStamp) {
+        widget.postFrameCallback!.call(this);
+      });
+    }
   }
 
   @override

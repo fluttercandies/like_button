@@ -1,3 +1,7 @@
+## 2.0.5
+
+* Add postFrameCallback to support start animation at first time(#65)
+
 ## 2.0.4
 
 * Fix issue that Number reversed when using RTL localization

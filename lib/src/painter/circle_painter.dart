@@ -60,6 +60,7 @@ class CirclePainter extends CustomPainter {
         (oldDelegate.outerCircleRadiusProgress != outerCircleRadiusProgress ||
             oldDelegate.innerCircleRadiusProgress !=
                 innerCircleRadiusProgress ||
-            oldDelegate.circleColor != circleColor);
+            oldDelegate.circleColor.start != circleColor.start ||
+            oldDelegate.circleColor.end != circleColor.end);
   }
 }
