@@ -18,6 +18,7 @@ class LikeButton extends StatefulWidget {
     double? circleSize,
     this.likeCount,
     this.isLiked = false,
+    this.shouldWaitForAnimation = true,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.animationDuration = const Duration(milliseconds: 1000),
@@ -66,6 +67,10 @@ class LikeButton extends StatefulWidget {
   /// it's initial value
   /// you can get current value from onTap/countBuilder
   final bool? isLiked;
+
+  /// whether it should wait for the animation to finish before starting a new
+  /// animation
+  final bool shouldWaitForAnimation;
 
   /// like count
   /// if null, will not show
@@ -126,6 +131,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
 
   AnimationController? get controller => _controller;
+
   AnimationController? get likeCountController => _likeCountController;
 
   bool? _isLiked = false;
@@ -133,8 +139,11 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   int? _preLikeCount;
 
   bool? get isLiked => _isLiked;
+
   int? get likeCount => _likeCount;
+
   int? get preLikeCount => _preLikeCount;
+
   @override
   void initState() {
     super.initState();
@@ -415,6 +424,11 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   }
 
   void onTap() {
+    if (widget.shouldWaitForAnimation &&
+        (_controller!.isAnimating || _likeCountController!.isAnimating)) {
+      return;
+    }
+
     if (widget.onTap != null) {
       widget.onTap!(_isLiked ?? true).then((bool? isLiked) {
         _handleIsLikeChanged(isLiked);
