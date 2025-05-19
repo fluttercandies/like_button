@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Externally control animation using isLiked flag
+
 ## 2.0.5
 
 * Add postFrameCallback to support start animation at first time(#65)
