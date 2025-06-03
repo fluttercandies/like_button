@@ -448,16 +448,62 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         Text(text, style: const TextStyle(color: Colors.grey));
   }
 
-  void onTap() {
+  Future<void> onTap() async {
     if (_controller!.isAnimating || _likeCountController!.isAnimating) {
       return;
     }
-    if (widget.onTap != null) {
-      widget.onTap!(_isLiked ?? true).then((bool? isLiked) {
-        _handleIsLikeChanged(isLiked);
+
+    final bool? previousIsLiked = _isLiked;
+    final int? previousLikeCount = _likeCount;
+
+    final bool targetIsLiked = !(_isLiked ?? true);
+
+    // Calcola il nuovo likeCount in base al target
+    int? newLikeCount = _likeCount;
+    if (_likeCount != null) {
+      newLikeCount = targetIsLiked ? _likeCount! + 1 : _likeCount! - 1;
+    }
+
+    _isLiked = targetIsLiked;
+    _preLikeCount = previousLikeCount;
+    _likeCount = newLikeCount;
+
+    if (mounted) {
+      setState(() {
+        if (_isLiked!) {
+          _controller!.reset();
+          _controller!.forward();
+        }
+        if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+          _likeCountController!.reset();
+          _likeCountController!.forward();
+        }
       });
-    } else {
-      _handleIsLikeChanged(!(_isLiked ?? true));
+    }
+
+    bool? result;
+    if (widget.onTap != null) {
+      result = await widget.onTap!(targetIsLiked);
+    }
+
+    // Se l'operazione fallisce o ritorna null, revert
+    if (result != null && result != targetIsLiked) {
+      _isLiked = previousIsLiked;
+      _likeCount = previousLikeCount;
+      _preLikeCount = newLikeCount;
+
+      if (mounted) {
+        setState(() {
+          if (_isLiked!) {
+            _controller!.reset();
+            _controller!.forward();
+          }
+          if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+            _likeCountController!.reset();
+            _likeCountController!.forward();
+          }
+        });
+      }
     }
   }
 
