@@ -481,7 +481,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       return;
     }
 
-    if (isLiked != null && isLiked != _isLiked) {
+    if (isLiked != null ) {
       if (_likeCount != null) {
         _preLikeCount = _likeCount;
         if (isLiked) {
@@ -490,7 +490,10 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           _likeCount = _likeCount! - 1;
         }
       }
-      _isLiked = isLiked;
+      setState((){
+        _isLiked = isLiked;
+      });
+
 
       if (mounted) {
         setState(() {
