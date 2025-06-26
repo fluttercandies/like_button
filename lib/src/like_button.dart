@@ -37,6 +37,7 @@ class LikeButton extends StatefulWidget {
     this.padding,
     this.countDecoration,
     this.postFrameCallback,
+    this.onError,
   })  : bubblesSize = bubblesSize ?? size * 2.0,
         circleSize = circleSize ?? size * 0.8,
         super(key: key);
@@ -110,6 +111,9 @@ class LikeButton extends StatefulWidget {
   /// call back of first frame with LikeButtonState
   final Function(LikeButtonState state)? postFrameCallback;
 
+  /// callback chiamata quando il like ottimistico fallisce
+  final void Function(bool? previousIsLiked, int? previousLikeCount)? onError;
+
   @override
   State<StatefulWidget> createState() => LikeButtonState();
 }
@@ -131,16 +135,19 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
   bool? _isLiked = false;
   int? _likeCount;
   int? _preLikeCount;
+  int? _lastOptimisticLikeCount;
 
   bool? get isLiked => _isLiked;
   int? get likeCount => _likeCount;
   int? get preLikeCount => _preLikeCount;
+
+  bool _isPerformingOptimisticUpdate = false;
+
   @override
   void initState() {
     super.initState();
 
     _isLiked = widget.isLiked;
-
     _likeCount = widget.likeCount;
     _preLikeCount = _likeCount;
 
@@ -162,27 +169,29 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
 
   @override
   void didUpdateWidget(LikeButton oldWidget) {
-    // Check if isLiked state has changed from props
-    if (widget.isLiked != oldWidget.isLiked && widget.isLiked != _isLiked) {
-      // Play animation when isLiked becomes true
-      if (widget.isLiked == true) {
-        _playLikeAnimation();
-      }
-
-      // Update internal state
-      _updateLikeState(widget.isLiked);
+    // Aggiorna lo stato locale solo se il valore esterno cambia davvero
+    if (widget.isLiked != _isLiked) {
+      _isLiked = widget.isLiked;
+      setState(() {});
     }
 
     // Update like count if changed
     if (widget.likeCount != _likeCount) {
+      // Se il valore esterno coincide con quello ottimistico, non rilanciare animazione
+      final bool isOptimisticMatch = _lastOptimisticLikeCount != null &&
+          widget.likeCount == _lastOptimisticLikeCount;
       _preLikeCount = _likeCount;
       _likeCount = widget.likeCount;
 
-      // Play like count animation if needed
       if (widget.likeCountAnimationType != LikeCountAnimationType.none &&
-          _preLikeCount != _likeCount) {
+          _preLikeCount != _likeCount &&
+          !isOptimisticMatch) {
         _likeCountController?.reset();
         _likeCountController?.forward();
+      }
+      // Se il valore esterno conferma quello ottimistico, azzera il flag
+      if (isOptimisticMatch) {
+        _lastOptimisticLikeCount = null;
       }
     }
 
@@ -243,8 +252,8 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         animation: _controller!,
         builder: (BuildContext c, Widget? w) {
           final Widget likeWidget =
-              widget.likeBuilder?.call(_isLiked ?? true) ??
-                  defaultWidgetBuilder(_isLiked ?? true, widget.size);
+              widget.likeBuilder?.call(_isLiked ?? false) ??
+                  defaultWidgetBuilder(_isLiked ?? false, widget.size);
           return Stack(
             clipBehavior: Clip.none,
             children: <Widget>[
@@ -448,16 +457,65 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         Text(text, style: const TextStyle(color: Colors.grey));
   }
 
-  void onTap() {
-    if (_controller!.isAnimating || _likeCountController!.isAnimating) {
+  Future<void> onTap() async {
+    if (_controller!.isAnimating ||
+        _likeCountController!.isAnimating ||
+        _isPerformingOptimisticUpdate) {
       return;
     }
-    if (widget.onTap != null) {
-      widget.onTap!(_isLiked ?? true).then((bool? isLiked) {
-        _handleIsLikeChanged(isLiked);
+    _isPerformingOptimisticUpdate = true;
+    final bool? previousIsLiked = _isLiked;
+    final int? previousLikeCount = _likeCount;
+    final bool targetIsLiked = !(_isLiked ?? true);
+    int? newLikeCount = _likeCount;
+    if (_likeCount != null) {
+      newLikeCount = targetIsLiked ? _likeCount! + 1 : _likeCount! - 1;
+    }
+    _isLiked = targetIsLiked;
+    _preLikeCount = previousLikeCount;
+    _likeCount = newLikeCount;
+    _lastOptimisticLikeCount = _likeCount;
+    if (mounted) {
+      setState(() {
+        if (_isLiked! && !(previousIsLiked ?? false)) {
+          _controller!.reset();
+          _controller!.forward();
+        }
+        if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+          _likeCountController!.reset();
+          _likeCountController!.forward();
+        }
       });
-    } else {
-      _handleIsLikeChanged(!(_isLiked ?? true));
+    }
+    bool? result;
+    if (widget.onTap != null) {
+      result = await widget.onTap!(targetIsLiked);
+    }
+    _isPerformingOptimisticUpdate = false;
+    // Se l'operazione fallisce o ritorna null, revert e chiama onError
+    if (result != null && result != targetIsLiked) {
+      final bool? prevIsLiked = previousIsLiked;
+      final int? prevLikeCount = previousLikeCount;
+      _isLiked = previousIsLiked;
+      _likeCount = previousLikeCount;
+      _preLikeCount = newLikeCount;
+      _lastOptimisticLikeCount = null;
+      if (mounted) {
+        setState(() {
+          // Forza l'animazione anche nel rollback se si torna a like
+          if (_isLiked! && previousIsLiked == false) {
+            _controller!.reset();
+            _controller!.forward();
+          }
+          if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+            _likeCountController!.reset();
+            _likeCountController!.forward();
+          }
+        });
+      }
+      if (widget.onError != null) {
+        widget.onError!(prevIsLiked, prevLikeCount);
+      }
     }
   }
 
